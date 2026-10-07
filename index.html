@@ -1,0 +1,843 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Conversion Deck</title>
+<style>
+:root{--bg:#16181d;--panel:#1f232b;--panel2:#272c36;--ink:#e8e6df;--mute:#9aa0ab;--line:#394050;--acc:#e0b04a;--good:#6cc784;--bad:#e06c6c;--card:#f4ecd8;--cardink:#2b2418}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.4 system-ui,-apple-system,Segoe UI,sans-serif}
+header{display:flex;gap:12px;align-items:center;padding:10px 16px;background:var(--panel);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;flex-wrap:wrap}
+header h1{font-size:17px;margin:0 12px 0 0;color:var(--acc)}
+nav button{background:none;border:0;color:var(--mute);padding:8px 14px;font-size:14px;cursor:pointer;border-bottom:2px solid transparent}
+nav button.on{color:var(--ink);border-color:var(--acc)}
+main{padding:16px;max-width:1500px;margin:auto}
+button,select,input,textarea{font:inherit}
+.btn{background:var(--panel2);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:6px 12px;cursor:pointer}
+.btn:hover:not(:disabled){border-color:var(--acc)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn.pri{background:var(--acc);color:#222;border-color:var(--acc);font-weight:600}
+.btn.sm{padding:2px 8px;font-size:12px}
+.btn.bad{color:var(--bad)}
+input,select,textarea{background:#12151a;color:var(--ink);border:1px solid var(--line);border-radius:5px;padding:4px 7px}
+input[type=number]{width:60px}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.split{display:grid;grid-template-columns:340px 1fr;gap:16px}
+@media(max-width:900px){.split{grid-template-columns:1fr}}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px}
+.panel h2,.panel h3{margin:0 0 8px;font-size:15px}
+.decklist .it{display:flex;gap:6px;align-items:center;padding:4px 6px;border-radius:5px;cursor:pointer}
+.decklist .it:hover,.decklist .it.sel{background:var(--panel2)}
+.decklist .it .n{width:44px;color:var(--mute)}
+.decklist .it.lv .nm{color:var(--acc);font-weight:600}
+.decklist .it .nm{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sub{border:1px solid var(--line);border-radius:6px;padding:8px;margin:8px 0;background:var(--panel2)}
+.sub h4{margin:0 0 6px;font-size:12px;color:var(--mute);text-transform:uppercase;letter-spacing:.05em}
+.fr{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:4px 0}
+.fr label{color:var(--mute);font-size:12px}
+.ab-ed{border:1px solid var(--acc);border-radius:8px;padding:8px;margin:10px 0}
+.muted{color:var(--mute)}
+/* ---------- card face ---------- */
+.card{width:2.5in;height:3.5in;background:var(--card);color:var(--cardink);border:2px solid #5a4a2a;border-radius:10px;padding:7px 8px;display:flex;flex-direction:column;gap:4px;overflow:hidden;font-size:8.5pt;line-height:1.2;position:relative}
+.card.level{background:#f1d98b;border-color:#8a6a10;border-width:3px}
+.card .hd{display:flex;align-items:center;gap:6px;border-bottom:1px solid #5a4a2a55;padding-bottom:3px}
+.card .num{background:#2b2418;color:#f4ecd8;border-radius:4px;padding:0 5px;font-weight:700;font-size:9pt}
+.card.level .num{background:#8a6a10}
+.card .nm{font-weight:700;font-size:11pt;flex:1}
+.card .tags{display:flex;gap:3px;flex-wrap:wrap}
+.chip{display:inline-block;border-radius:9px;padding:0 6px;font-size:7.5pt;border:1px solid #0003;background:#0001;white-space:nowrap}
+.chip.res{color:#fff;border:0}
+.chip.tag{background:#2b241818}
+.card .sec{font-size:6.5pt;text-transform:uppercase;letter-spacing:.06em;opacity:.65;margin-top:2px}
+.card .stores{display:flex;gap:3px;flex-wrap:wrap}
+.card .abs{display:flex;flex-direction:column;gap:4px;flex:1}
+.card .ab{border:1px solid #5a4a2a66;border-radius:5px;padding:3px 5px;background:#ffffff55}
+.card .ab.m{border-left:4px solid #b0402a}
+.card .ab.o{border-left:4px solid #3a7d4a}
+.card .ab .t{display:flex;gap:5px;font-weight:700}
+.card .ab .t i{font-weight:400;font-size:7pt;opacity:.7}
+.card .ab .d{font-size:7.8pt}
+.card .ab .d b{font-weight:600}
+.card.small{transform-origin:top left}
+/* ---------- play ---------- */
+.board{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-start}
+.slot{display:flex;flex-direction:column;gap:6px}
+.card.ex{filter:grayscale(.8) brightness(.75)}
+.card.ex::after{content:"EXHAUSTED";position:absolute;top:34%;left:0;right:0;text-align:center;font-weight:800;font-size:15pt;color:#7a1f1f;transform:rotate(-12deg);opacity:.75;pointer-events:none}
+.card .abtn{display:block;width:100%;text-align:left;cursor:pointer;color:inherit;font:inherit}
+.card button.ab:disabled{opacity:.45;cursor:not-allowed}
+.card button.ab:not(:disabled):hover{background:#fff;box-shadow:0 0 0 2px var(--acc)}
+.att{margin-left:20px;padding-left:8px;border-left:3px dashed var(--acc);display:flex;flex-direction:column;gap:8px}
+.stat{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:10px}
+.stat div{background:var(--panel2);border-radius:6px;padding:4px 10px}
+.pile{display:flex;flex-wrap:wrap;gap:6px}
+.mini{background:var(--card);color:var(--cardink);border-radius:5px;padding:2px 7px;font-size:12px}
+.mini.lv{background:#f1d98b}
+.log{max-height:220px;overflow:auto;font-size:12px;color:var(--mute);background:#12151a;border-radius:6px;padding:6px 8px}
+.log div{padding:1px 0}
+.plusminus{display:inline-flex;gap:2px;margin-left:2px}
+.plusminus button{border:0;background:#0003;color:inherit;border-radius:3px;cursor:pointer;line-height:1;padding:0 4px}
+/* ---------- modal ---------- */
+.ov{position:fixed;inset:0;background:#000a;display:flex;align-items:center;justify-content:center;z-index:50;padding:16px}
+.modal{background:var(--panel);border:1px solid var(--acc);border-radius:10px;padding:16px;max-width:900px;max-height:90vh;overflow:auto}
+.modal h3{margin:0 0 10px}
+.picks{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}
+.alloc{display:grid;grid-template-columns:auto auto 1fr;gap:6px 10px;align-items:center;margin:10px 0}
+/* ---------- print ---------- */
+#printArea .sheet{display:grid;grid-template-columns:repeat(3,2.5in);grid-auto-rows:3.5in;gap:0;width:7.5in;margin:0 auto 20px;background:#fff}
+#printArea .sheet .card{border-radius:0;border-width:1px;border-style:dashed;border-color:#888}
+@media print{
+  @page{margin:.25in}
+  body{background:#fff}
+  header,.noprint{display:none!important}
+  main{padding:0;max-width:none}
+  #printArea .sheet{margin:0;page-break-after:always;break-after:page}
+  .card{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>◈ Conversion Deck</h1>
+  <nav id="nav"></nav>
+  <span style="flex:1"></span>
+  <span class="muted" id="saveNote"></span>
+</header>
+<main id="main"></main>
+<datalist id="dl-tags"></datalist>
+<datalist id="dl-res"></datalist>
+
+<script>
+"use strict";
+/* ===================================================================
+   Helpers
+=================================================================== */
+const $ = (s, r=document) => r.querySelector(s);
+function h(tag, attrs, ...kids){
+  const e = document.createElement(tag);
+  for (const [k,v] of Object.entries(attrs||{})){
+    if (v==null || v===false) continue;
+    if (k.startsWith('on')) e.addEventListener(k.slice(2), v);
+    else if (k==='class') e.className = v;
+    else if (k==='style' && typeof v==='object') Object.assign(e.style, v);
+    else if (k==='value') e.value = v;
+    else e.setAttribute(k, v===true?'':v);
+  }
+  (function add(list){ for (const c of list){ if (c==null||c===false) continue; if (Array.isArray(c)) add(c); else e.append(c.nodeType?c:document.createTextNode(String(c))); } })(kids);
+  return e;
+}
+const clone = o => JSON.parse(JSON.stringify(o));
+const lc = s => String(s||'').trim().toLowerCase();
+function resColor(name){ let x=0; for (const ch of String(name)) x=(x*31+ch.charCodeAt(0))>>>0; return `hsl(${x%360} 55% 38%)`; }
+const OPS = {'<':(a,b)=>a<b,'<=':(a,b)=>a<=b,'=':(a,b)=>a===b,'>=':(a,b)=>a>=b,'>':(a,b)=>a>b};
+const OPT = {'<':'fewer than','<=':'at most','=':'exactly','>=':'at least','>':'more than'};
+
+/* ===================================================================
+   Sample deck
+=================================================================== */
+function sampleDeck(){
+  const A = (name, mandatory, conds, costs, effs) => ({name, mandatory, conds, costs, effs});
+  const pay = (n,res,scope='any',tag='') => ({type:'pay',n,res,scope,tag});
+  return {
+    nextCard: 9, nextLevel: 3,
+    cards: [
+      {id:1,name:'Forest',tags:['Land'],stores:[{res:'wood',max:6}],abilities:[
+        A('Chop',false,[],[{type:'exSelf'}],[{type:'gain',n:2,res:'wood',target:'self'}])]},
+      {id:2,name:'Quarry',tags:['Land'],stores:[{res:'stone',max:4}],abilities:[
+        A('Dig',false,[],[{type:'exSelf'}],[{type:'gain',n:1,res:'stone',target:'self'}])]},
+      {id:3,name:'Sawmill',tags:['Building'],stores:[{res:'plank',max:4}],abilities:[
+        A('Saw',false,[],[{type:'exSelf'},pay(2,'wood')],[{type:'gain',n:1,res:'plank',target:'self'}]),
+        A('Fast Saw',false,[{type:'hasAtt'}],[{type:'exSelf'},pay(2,'wood')],[{type:'gain',n:2,res:'plank',target:'self'}])]},
+      {id:4,name:'Campfire',tags:['Land'],stores:[],abilities:[
+        A('Stoke',false,[],[pay(1,'wood')],[{type:'ready',rmode:'card',tag:'Land',res:''}])]},
+      {id:5,name:'Mason',tags:['Building'],stores:[{res:'brick',max:3}],abilities:[
+        A('Fire Bricks',false,[],[{type:'exSelf'},pay(2,'stone')],[{type:'gain',n:1,res:'brick',target:'self'}])]},
+      {id:6,name:'Compost Heap',tags:['Land'],stores:[{res:'compost',max:3}],abilities:[
+        A('Rot',true,[{type:'resCount',res:'wood',op:'>',n:4}],[pay(1,'wood')],[{type:'gain',n:1,res:'compost',target:'self'}])]},
+      {id:7,name:'Hammer',tags:['Tool'],stores:[],abilities:[]},
+      {id:8,name:'Foreman',tags:['Tool'],stores:[],abilities:[
+        A('Inspire',false,[{type:'isReady'}],[{type:'exSelf'}],[{type:'ready',rmode:'card',tag:'Building',res:''}])]},
+    ],
+    levels: [
+      {id:1,name:'First Shelter',tags:['Land','Building'],outOfPlay:[3],
+        bringConds:[],bringCosts:[pay(2,'wood')],goalCosts:[pay(2,'plank')]},
+      {id:2,name:'The Village',tags:['Land','Building','Tool'],outOfPlay:[7],
+        bringConds:[{type:'resCount',res:'plank',op:'>',n:0}],bringCosts:[pay(1,'plank')],
+        goalCosts:[pay(2,'brick'),pay(2,'plank'),{type:'exCard',tag:'Tool',res:'',n:1}]},
+    ],
+    order: ['c:1','c:2','c:3','l:1','c:4','c:5','c:6','l:2','c:7','c:8']
+  };
+}
+/* the order above has c:7/c:8 after level 2 on purpose: they unlock after finishing level 2 and
+   can't be used there. Level 2 therefore needs Hammer earlier — fix by moving them before l:2 */
+function fixSample(d){ d.order=['c:1','c:2','c:3','l:1','c:4','c:5','c:6','c:7','c:8','l:2']; return d; }
+
+/* ===================================================================
+   Persistence
+=================================================================== */
+let deck, G;
+function loadAll(){
+  try { deck = JSON.parse(localStorage.getItem('cd.deck.v1')); } catch(e){}
+  if (!deck || !deck.cards) deck = fixSample(sampleDeck());
+  try { G = JSON.parse(localStorage.getItem('cd.game.v1')); } catch(e){}
+  if (!G || !G.phase) G = newGame();
+}
+function saveAll(){
+  try { localStorage.setItem('cd.deck.v1', JSON.stringify(deck)); localStorage.setItem('cd.game.v1', JSON.stringify(G)); $('#saveNote').textContent='saved'; }
+  catch(e){ $('#saveNote').textContent='(not saving)'; }
+}
+const cardDef = id => deck.cards.find(c=>c.id===id);
+const levelDef = id => deck.levels.find(l=>l.id===id);
+function refreshLists(){
+  const tags=new Set(), res=new Set();
+  deck.cards.forEach(c=>{ c.tags.forEach(t=>tags.add(t)); c.stores.forEach(s=>res.add(s.res)); });
+  deck.levels.forEach(l=>l.tags.forEach(t=>tags.add(t)));
+  $('#dl-tags').replaceChildren(...[...tags].filter(Boolean).map(t=>h('option',{value:t})));
+  $('#dl-res').replaceChildren(...[...res].filter(Boolean).map(t=>h('option',{value:t})), h('option',{value:'*'}));
+}
+
+/* ===================================================================
+   Text rendering of rules
+=================================================================== */
+const resName = r => (!r||r==='*') ? 'any resource' : r;
+const SCOPE_T = {self:'this card',any:'cards in play',tag:'cards in play with',att:'cards attached',atttag:'attached cards with'};
+function condText(c){
+  const v=`${OPT[c.op]} ${c.n}`;
+  switch(c.type){
+    case 'tagCount': return `${v} [${c.tag||'?'}] cards in play`;
+    case 'resCount': return `${v} ${c.res||'?'} in play`;
+    case 'selfRes': return `this card has ${v} ${c.res||'?'}`;
+    case 'isReady': return 'this card is ready';
+    case 'isExhausted': return 'this card is exhausted';
+    case 'hasAtt': return 'a card is attached to this card';
+    case 'attTag': return `${v} [${c.tag||'?'}] among attached cards`;
+    case 'attRes': return `${v} ${c.res||'?'} on attached cards`;
+  } return '?';
+}
+function filtText(c, verb){
+  return `${c.tag?` with [${c.tag}]`:''}${c.res?` holding ${c.n} ${c.res}`:''}`;
+}
+function costText(c){
+  switch(c.type){
+    case 'pay': { const sc=SCOPE_T[c.scope]||''; return `Pay ${c.n} ${resName(c.res)} from ${sc}${(c.scope==='tag'||c.scope==='atttag')?` [${c.tag||'?'}]`:''}`; }
+    case 'exSelf': return 'Exhaust this card';
+    case 'exCard': return `Exhaust a card${filtText(c)}`;
+    case 'detach': return `Detach a card${filtText(c)}`;
+  } return '?';
+}
+function effText(e){
+  switch(e.type){
+    case 'gain':
+      if (e.target==='self') return `Gain ${e.n} ${e.res||'?'} on this card`;
+      if (e.target==='tag') return `Gain ${e.n} ${e.res||'?'} on a [${e.tag||'?'}] card`;
+      return `Gain ${e.n} ${e.res||'?'} (divide freely among your cards)`;
+    case 'ready': return e.rmode==='self' ? 'Ready this card' : `Ready a card${filtText({tag:e.tag,res:e.res,n:1})}`;
+  } return '?';
+}
+
+/* ===================================================================
+   Card face
+=================================================================== */
+function resChip(name, text){ return h('span',{class:'chip res',style:{background:resColor(name)}}, text); }
+function abilityDesc(a){
+  const parts=[];
+  if (a.conds.length) parts.push(h('div',{}, h('b',{},'If: '), a.conds.map(condText).join('; ')));
+  if (a.costs.length) parts.push(h('div',{}, h('b',{},'Cost: '), a.costs.map(costText).join('; ')));
+  if (a.effs.length) parts.push(h('div',{}, h('b',{},'→ '), a.effs.map(effText).join('; ')));
+  if (!parts.length) parts.push(h('div',{class:'muted'},'(no effect)'));
+  return parts;
+}
+function cardFace(def, inst, ctl){
+  const ex = inst && !inst.ready;
+  const el = h('div',{class:'card'+(ex?' ex':'')});
+  el.append(h('div',{class:'hd'}, h('span',{class:'num'},'#'+def.id), h('span',{class:'nm'},def.name||'(unnamed)')));
+  if (def.tags.length) el.append(h('div',{class:'tags'}, def.tags.map(t=>h('span',{class:'chip tag'},t))));
+  if (def.stores.length){
+    el.append(h('div',{class:'sec'},'Stores'));
+    el.append(h('div',{class:'stores'}, def.stores.map(s=>{
+      const cur = inst ? (inst.res[s.res]||0) : null;
+      const txt = inst ? `${s.res} ${cur}${s.max!=null?'/'+s.max:''}` : `${s.res}${s.max!=null?' (max '+s.max+')':''}`;
+      const c = resChip(s.res, txt);
+      if (inst && ctl && ctl.manual) c.append(h('span',{class:'plusminus'},
+        h('button',{onclick:()=>ctl.manual(s.res,-1)},'−'), h('button',{onclick:()=>ctl.manual(s.res,1)},'+')));
+      return c;
+    })));
+  }
+  if (def.abilities.length) el.append(h('div',{class:'sec'},'Abilities'));
+  const abs = h('div',{class:'abs'});
+  def.abilities.forEach((a,i)=>{
+    const body = [h('div',{class:'t'}, a.name||'Ability', h('i',{}, a.mandatory?'mandatory':'optional')), h('div',{class:'d'}, abilityDesc(a))];
+    if (inst && ctl && !a.mandatory){
+      const ok = ctl.can(i);
+      abs.append(h('button',{class:'ab abtn o',disabled:!ok,onclick:()=>ctl.use(i)}, body));
+    } else if (inst && ctl && a.mandatory){
+      abs.append(h('div',{class:'ab m',style:{}}, body));
+    } else abs.append(h('div',{class:'ab '+(a.mandatory?'m':'o')}, body));
+  });
+  el.append(abs);
+  return el;
+}
+function levelFace(l){
+  const el = h('div',{class:'card level'});
+  el.append(h('div',{class:'hd'}, h('span',{class:'num'},'LVL '+l.id), h('span',{class:'nm'},l.name||'(unnamed)')));
+  el.append(h('div',{class:'sec'},'Cards with these tags are used'));
+  el.append(h('div',{class:'tags'}, l.tags.map(t=>h('span',{class:'chip tag'},t))));
+  el.append(h('div',{class:'sec'},'Start out of play'));
+  el.append(h('div',{}, l.outOfPlay.length ? l.outOfPlay.map(n=>'#'+n).join(', ') : '—'));
+  if (l.outOfPlay.length){
+    el.append(h('div',{class:'sec'},'To bring a card into play'));
+    el.append(h('div',{class:'ab o'}, h('div',{class:'d'},[
+      l.bringConds.length?h('div',{},h('b',{},'If: '),l.bringConds.map(condText).join('; ')):null,
+      l.bringCosts.length?h('div',{},h('b',{},'Cost: '),l.bringCosts.map(costText).join('; ')):null,
+      !l.bringConds.length&&!l.bringCosts.length?'Free':null])));
+  }
+  el.append(h('div',{style:{flex:1}}));
+  el.append(h('div',{class:'sec'},'Complete the level by paying'));
+  el.append(h('div',{class:'ab m'}, h('div',{class:'d'}, l.goalCosts.length? l.goalCosts.map(costText).join('; ') : 'Nothing — free')));
+  return el;
+}
+const faceFor = it => it.k==='c' ? cardFace(cardDef(it.id)) : levelFace(levelDef(it.id));
+const parseOrder = s => ({k:s[0], id:+s.slice(2)});
+
+/* ===================================================================
+   ENGINE  (generator-based so the same rules run in dry-run and interactive)
+=================================================================== */
+function newGame(){ return {phase:'draw', pos:0, unlocked:[], level:null, inPlay:[], outPlay:[], done:[], nextIid:1, log:['New game. Draw cards until you reach a level.']}; }
+const attachedOf = (S,host) => host ? S.inPlay.filter(c=>c.parent===host.iid) : [];
+const tagsOf = inst => cardDef(inst.num).tags.map(lc);
+const hasTag = (inst,t) => tagsOf(inst).includes(lc(t));
+const storeDef = (inst,res) => cardDef(inst.num).stores.find(s=>lc(s.res)===lc(res));
+function resKey(inst,res){ const s=storeDef(inst,res); return s?s.res:res; }
+const amt = (inst,res) => inst.res[resKey(inst,res)]||0;
+function room(inst,res){ const s=storeDef(inst,res); if(!s) return 0; return s.max==null?Infinity:Math.max(0,s.max-(inst.res[s.res]||0)); }
+function addRes(inst,res,n){ const s=storeDef(inst,res); if(!s) return 0; const k=Math.min(n,room(inst,res)); inst.res[s.res]=(inst.res[s.res]||0)+k; return k; }
+function makeInst(S,num){ const d=cardDef(num); const res={}; d.stores.forEach(s=>res[s.res]=0); return {iid:S.nextIid++, num, ready:true, res, parent:null}; }
+const ins = (S,iid) => S.inPlay.find(c=>c.iid===iid) || S.outPlay.find(c=>c.iid===iid);
+
+function evalCond(S,c,host){
+  switch(c.type){
+    case 'tagCount': return OPS[c.op](S.inPlay.filter(i=>hasTag(i,c.tag)).length, +c.n);
+    case 'resCount': return OPS[c.op](S.inPlay.reduce((a,i)=>a+amt(i,c.res),0), +c.n);
+    case 'selfRes': return !!host && OPS[c.op](amt(host,c.res), +c.n);
+    case 'isReady': return !!host && host.ready;
+    case 'isExhausted': return !!host && !host.ready;
+    case 'hasAtt': return attachedOf(S,host).length>0;
+    case 'attTag': return !!host && OPS[c.op](attachedOf(S,host).filter(i=>hasTag(i,c.tag)).length, +c.n);
+    case 'attRes': return !!host && OPS[c.op](attachedOf(S,host).reduce((a,i)=>a+amt(i,c.res),0), +c.n);
+  } return false;
+}
+const condsOK = (S,conds,host) => conds.every(c=>evalCond(S,c,host));
+
+function matchFilter(i,f){ return (!f.tag||hasTag(i,f.tag)) && (!f.res||amt(i,f.res)>=Math.max(1,+f.n||1)); }
+function detachInst(S,inst){
+  const kill=[inst.iid]; let grew=true;
+  while(grew){ grew=false; for(const c of S.inPlay) if(c.parent&&kill.includes(c.parent)&&!kill.includes(c.iid)){kill.push(c.iid);grew=true;} }
+  for(const iid of kill){
+    const i=S.inPlay.find(c=>c.iid===iid); S.inPlay=S.inPlay.filter(c=>c.iid!==iid);
+    i.parent=null; i.ready=true; Object.keys(i.res).forEach(k=>i.res[k]=0); S.outPlay.push(i);
+  }
+}
+const label = (S,i) => `#${i.num} ${cardDef(i.num).name}`;
+
+/* ask requests: {kind:'pick',title,cands:[inst],avoid} -> inst
+                 {kind:'alloc',title,items:[{inst,res,max}],total} -> number[] */
+function* payCost(S,c,host,log){
+  switch(c.type){
+    case 'exSelf':
+      if(!host||!host.ready) return false; host.ready=false; log.push(`exhaust ${label(S,host)}`); return true;
+    case 'pay': {
+      const n=+c.n||0; if(n<=0) return true;
+      let src;
+      if(c.scope==='self') src=host?[host]:[];
+      else if(c.scope==='any') src=S.inPlay;
+      else if(c.scope==='tag') src=S.inPlay.filter(i=>hasTag(i,c.tag));
+      else if(c.scope==='att') src=attachedOf(S,host);
+      else src=attachedOf(S,host).filter(i=>hasTag(i,c.tag));
+      const items=[];
+      for(const i of src){
+        if(!c.res||c.res==='*'){ for(const [k,v] of Object.entries(i.res)) if(v>0) items.push({inst:i,res:k,max:v}); }
+        else { const v=amt(i,c.res); if(v>0) items.push({inst:i,res:resKey(i,c.res),max:v}); }
+      }
+      const tot=items.reduce((a,x)=>a+x.max,0); if(tot<n) return false;
+      let take;
+      if(tot===n) take=items.map(x=>x.max);
+      else if(items.length===1) take=[n];
+      else take=yield {kind:'alloc',title:`Pay ${n} ${resName(c.res)}`,items,total:n};
+      items.forEach((x,k)=>{ if(take[k]) { x.inst.res[x.res]-=take[k]; log.push(`pay ${take[k]} ${x.res} from ${label(S,x.inst)}`);} });
+      return true;
+    }
+    case 'exCard': {
+      const cands=S.inPlay.filter(i=>i.ready&&matchFilter(i,c)); if(!cands.length) return false;
+      const t=cands.length===1?cands[0]:yield {kind:'pick',title:'Exhaust which card?',cands,avoid:host&&host.iid};
+      t.ready=false; log.push(`exhaust ${label(S,t)}`); return true;
+    }
+    case 'detach': {
+      const pool=host?attachedOf(S,host):S.inPlay.filter(i=>i.parent);
+      const cands=pool.filter(i=>matchFilter(i,c)); if(!cands.length) return false;
+      const t=cands.length===1?cands[0]:yield {kind:'pick',title:'Detach which card?',cands};
+      detachInst(S,t); log.push(`detach ${label(S,t)}`); return true;
+    }
+  } return false;
+}
+function* applyEffect(S,e,host,log){
+  const n=+e.n||0;
+  if(e.type==='gain'){
+    if(e.target==='self'){ if(host){ const k=addRes(host,e.res,n); log.push(`+${k} ${e.res} on ${label(S,host)}`);} return; }
+    if(e.target==='tag'){
+      const cands=S.inPlay.filter(i=>hasTag(i,e.tag)&&storeDef(i,e.res)&&room(i,e.res)>0);
+      if(!cands.length){ log.push(`no [${e.tag}] card could store ${e.res}`); return; }
+      const t=cands.length===1?cands[0]:yield {kind:'pick',title:`Gain ${n} ${e.res} on which card?`,cands};
+      log.push(`+${addRes(t,e.res,n)} ${e.res} on ${label(S,t)}`); return;
+    }
+    const items=S.inPlay.filter(i=>storeDef(i,e.res)&&room(i,e.res)>0).map(i=>({inst:i,res:resKey(i,e.res),max:Math.min(room(i,e.res),n)}));
+    const total=Math.min(n,items.reduce((a,x)=>a+x.max,0));
+    if(total<=0){ log.push(`nowhere to store ${e.res} (lost)`); return; }
+    let put;
+    if(items.length===1) put=[total];
+    else if(items.reduce((a,x)=>a+x.max,0)===total) put=items.map(x=>x.max);
+    else put=yield {kind:'alloc',title:`Divide ${total} ${e.res} among your cards`,items,total};
+    items.forEach((x,k)=>{ if(put[k]){ addRes(x.inst,e.res,put[k]); log.push(`+${put[k]} ${e.res} on ${label(S,x.inst)}`);} });
+  } else if(e.type==='ready'){
+    if(e.rmode==='self'){ if(host){ host.ready=true; log.push(`ready ${label(S,host)}`);} return; }
+    const cands=S.inPlay.filter(i=>!i.ready&&matchFilter(i,{tag:e.tag,res:e.res,n:1}));
+    if(!cands.length){ log.push('no exhausted card to ready'); return; }
+    const t=cands.length===1?cands[0]:yield {kind:'pick',title:'Ready which card?',cands};
+    t.ready=true; log.push(`ready ${label(S,t)}`);
+  }
+}
+function* activate(S,ab,host,log){
+  if(!condsOK(S,ab.conds,host)) return false;
+  const costs=[...ab.costs].sort((a,b)=>(a.type==='exSelf'?0:1)-(b.type==='exSelf'?0:1));
+  for(const c of costs){ if(!(yield* payCost(S,c,host,log))) return false; }
+  for(const e of ab.effs) yield* applyEffect(S,e,host,log);
+  return true;
+}
+function* levelCosts(S,conds,costs,log){
+  if(!condsOK(S,conds,null)) return false;
+  for(const c of costs){ if(c.type==='exSelf') continue; if(!(yield* payCost(S,c,null,log))) return false; }
+  return true;
+}
+/* drivers */
+function autoAnswer(r){
+  if(r.kind==='pick') return r.cands.find(c=>c.iid!==r.avoid)||r.cands[0];
+  let left=r.total; return r.items.map(x=>{ const k=Math.min(x.max,left); left-=k; return k; });
+}
+function runSync(gen){ let r=gen.next(); while(!r.done) r=gen.next(autoAnswer(r.value)); return r.value; }
+async function runAsync(gen,noCancel){ let r=gen.next(); while(!r.done){ r=gen.next(await askUser(r.value,noCancel)); } return r.value; }
+function dry(fn){ const S=clone(G); return runSync(fn(S,[])); }
+
+const canUse = (host,i) => G.phase==='level' && dry((S,l)=>activate(S,cardDef(host.num).abilities[i],ins(S,host.iid),l));
+
+/* ===================================================================
+   Game actions
+=================================================================== */
+let history=[];
+async function act(fn){
+  const snap=JSON.stringify(G); history.push(snap); if(history.length>60) history.shift();
+  try { await fn(); }
+  catch(e){ G=JSON.parse(snap); history.pop(); if(e!=='cancel') console.error(e); }
+  saveAll(); render();
+}
+function undo(){ if(!history.length) return; G=JSON.parse(history.pop()); saveAll(); render(); }
+const say = (...m) => { G.log.push(...m); if(G.log.length>300) G.log.splice(0,G.log.length-300); };
+
+async function useAbility(host,i){
+  const ab=cardDef(host.num).abilities[i];
+  await act(async()=>{
+    const log=[]; const ok=await runAsync(activate(G,ab,ins(G,host.iid),log));
+    if(!ok) throw 'cancel';
+    say(`▶ ${label(G,host)}: ${ab.name} — ${log.join('; ')}`);
+    await settle();
+  });
+}
+async function settle(){
+  if(G.phase!=='level') return;
+  for(let guard=0; guard<80; guard++){
+    let fired=false;
+    for(const host of [...G.inPlay]){
+      const d=cardDef(host.num);
+      for(let i=0;i<d.abilities.length;i++){
+        const ab=d.abilities[i]; if(!ab.mandatory) continue;
+        if(dry((S,l)=>activate(S,ab,ins(S,host.iid),l))){
+          const log=[]; await runAsync(activate(G,ab,ins(G,host.iid),log),true);
+          say(`⚙ ${label(G,host)}: ${ab.name} (mandatory) — ${log.join('; ')}`);
+          fired=true; break;
+        }
+      }
+      if(fired) break;
+    }
+    if(!fired) return;
+  }
+  say('⚠ Mandatory abilities kept firing (stopped after 80 resolutions).');
+}
+function drawOne(){
+  const it=parseOrder(deck.order[G.pos]); G.pos++;
+  if(it.k==='c'){ G.unlocked.push(it.id); say(`Unlocked #${it.id} ${cardDef(it.id).name}`); return false; }
+  G.level=it.id; G.phase='levelready'; say(`Reached level ${it.id}: ${levelDef(it.id).name}`); return true;
+}
+function drawUntilLevel(){ return act(async()=>{
+  if(G.pos>=deck.order.length){ G.phase='won'; return; }
+  while(G.pos<deck.order.length){ if(drawOne()) return; }
+  G.phase='won'; say('The deck is exhausted — you win!');
+}); }
+function drawSingle(){ return act(async()=>{ if(G.pos<deck.order.length) drawOne(); }); }
+function beginLevel(){ return act(async()=>{
+  const L=levelDef(G.level); const tags=L.tags.map(lc);
+  G.inPlay=[]; G.outPlay=[];
+  for(const num of G.unlocked){
+    if(!cardDef(num).tags.some(t=>tags.includes(lc(t)))) continue;
+    const i=makeInst(G,num);
+    (L.outOfPlay.includes(num)?G.outPlay:G.inPlay).push(i);
+  }
+  G.phase='level'; say(`Level started: ${L.name}. ${G.inPlay.length} cards in play, ${G.outPlay.length} out of play.`);
+  await settle();
+}); }
+function bringIn(inst){ return act(async()=>{
+  const L=levelDef(G.level); const log=[];
+  const ok=await runAsync(levelCosts(G,L.bringConds,L.bringCosts,log));
+  if(!ok){ say('Cannot bring that card into play.'); throw 'cancel'; }
+  let host=null;
+  if(G.inPlay.length){
+    const choice=await askUser({kind:'pick',title:`Bring ${label(G,inst)} into play — attach it to a card?`,cands:G.inPlay,extra:'Just put it into play (not attached)'});
+    host=choice&&choice!=='none'?choice:null;
+  }
+  const real=ins(G,inst.iid); G.outPlay=G.outPlay.filter(c=>c.iid!==inst.iid);
+  real.parent=host?host.iid:null; real.ready=true; G.inPlay.push(real);
+  say(`➕ ${label(G,real)} enters play${host?' attached to '+label(G,host):''}${log.length?' — '+log.join('; '):''}`);
+  await settle();
+}); }
+function completeLevel(){ return act(async()=>{
+  const L=levelDef(G.level); const log=[];
+  const ok=await runAsync(levelCosts(G,[],L.goalCosts,log));
+  if(!ok) throw 'cancel';
+  say(`🏆 Completed ${L.name}! ${log.join('; ')}`);
+  G.done.push(L.id); G.inPlay=[]; G.outPlay=[]; G.level=null;
+  G.phase = G.pos>=deck.order.length ? 'won' : 'draw';
+  if(G.phase==='won') say('The deck is exhausted — you win!');
+}); }
+function restartLevel(){ if(confirm('Restart this level from its setup?')) act(async()=>{ G.phase='levelready'; G.inPlay=[]; G.outPlay=[]; say('Level reset.'); }); }
+function newRun(){ if(confirm('Start a new run? Current progress is lost.')){ G=newGame(); history=[]; saveAll(); render(); } }
+function manualAdjust(inst,res,d){ act(async()=>{ const i=ins(G,inst.iid);
+  if(d>0) addRes(i,res,d); else i.res[res]=Math.max(0,(i.res[res]||0)+d);
+  await settle(); }); }
+
+/* ===================================================================
+   Modals
+=================================================================== */
+function askUser(req,noCancel){ return new Promise((resolve,reject)=>{
+  const close=()=>ov.remove();
+  const cancel = noCancel ? null : h('button',{class:'btn',onclick:()=>{close();reject('cancel');}},'Cancel');
+  let body;
+  if(req.kind==='pick'){
+    body=h('div',{}, h('h3',{},req.title), h('div',{class:'picks'},
+      req.extra?h('button',{class:'btn pri',onclick:()=>{close();resolve('none');}},req.extra):null,
+      req.cands.map(c=>h('button',{class:'btn',style:{textAlign:'left'},onclick:()=>{close();resolve(c);}},
+        h('b',{},label(G,c)), ' ', h('span',{class:'muted'},
+          Object.entries(c.res).filter(([,v])=>v>0).map(([k,v])=>`${k}:${v}`).join(' ')+(c.ready?'':' (exhausted)'))))),
+      cancel);
+  } else {
+    const vals=autoAnswer(req); const inputs=[];
+    const sum=()=>inputs.reduce((a,x)=>a+(+x.value||0),0);
+    const status=h('span',{});
+    const ok=h('button',{class:'btn pri',onclick:()=>{close();resolve(inputs.map(x=>+x.value||0));}},'Confirm');
+    const upd=()=>{ const s=sum(); status.textContent=`${s} / ${req.total}`; ok.disabled=s!==req.total; };
+    const grid=h('div',{class:'alloc'});
+    req.items.forEach((x,k)=>{
+      const inp=h('input',{type:'number',min:0,max:x.max,value:vals[k],oninput:upd}); inputs.push(inp);
+      grid.append(h('span',{},label(G,x.inst)), resChip(x.res,`${x.res} (up to ${x.max})`), inp);
+    });
+    body=h('div',{}, h('h3',{},req.title), grid, h('div',{class:'row'},ok,cancel,status)); upd();
+  }
+  const ov=h('div',{class:'ov'}, h('div',{class:'modal'},body)); document.body.append(ov);
+}); }
+
+/* ===================================================================
+   Editor (Design tab)
+=================================================================== */
+const COND_T = {
+  tagCount:['Cards in play with tag',['tag','op','n']],
+  resCount:['Resource in play',['res','op','n']],
+  selfRes:['This card has resource',['res','op','n']],
+  isReady:['This card is ready',[]],
+  isExhausted:['This card is exhausted',[]],
+  hasAtt:['A card is attached to this card',[]],
+  attTag:['Attached cards with tag',['tag','op','n']],
+  attRes:['Attached cards have resource',['res','op','n']],
+};
+const COST_T = {
+  pay:['Pay resource',['n','res','scope','tag']],
+  exSelf:['Exhaust this card',[]],
+  exCard:['Exhaust a card (filters optional)',['tag','res','n']],
+  detach:['Detach a card (filters optional)',['tag','res','n']],
+};
+const EFF_T = {
+  gain:['Gain resource',['n','res','target','tag']],
+  ready:['Ready a card',['rmode','tag','res']],
+};
+const SELECTS = {
+  op:[['<','fewer than'],['<=','at most'],['=','exactly'],['>=','at least'],['>','more than']],
+  scope:[['self','this card'],['any','any cards in play'],['tag','cards in play with tag'],['att','cards attached to this'],['atttag','attached cards with tag']],
+  target:[['free','divide among cards'],['self','this card'],['tag','a card with tag']],
+  rmode:[['self','this card'],['card','a card…']],
+};
+const FIELD_LABEL = {tag:'tag',res:'resource',n:'#',op:'',scope:'from',target:'on',rmode:''};
+const DEFAULTS = {tag:'',res:'',op:'>=',n:1,scope:'any',target:'free',rmode:'card'};
+function visible(o,f){
+  if(f==='tag'){ if(o.type==='pay') return o.scope==='tag'||o.scope==='atttag'; if(o.type==='gain') return o.target==='tag'; return true; }
+  if(f==='n' && (o.type==='exCard'||o.type==='detach')) return true;
+  return true;
+}
+function mkRow(T,type){ const o={type}; for(const f of T[type][1]) o[f]=DEFAULTS[f]; if(type==='gain') o.target='self'; if(type==='ready') o.rmode='card'; return o; }
+
+function rowsEditor(arr,T,opts,onStruct){
+  const box=h('div',{});
+  const allowed=opts.allowed||Object.keys(T);
+  arr.forEach((o,idx)=>{
+    const fr=h('div',{class:'fr'});
+    const typeSel=h('select',{onchange:e=>{ arr[idx]=mkRow(T,e.target.value); onStruct(); }},
+      allowed.map(k=>h('option',{value:k,selected:k===o.type},T[k][0])));
+    fr.append(typeSel);
+    for(const f of T[o.type][1]){
+      if(!visible(o,f)) continue;
+      if(f==='scope' && opts.level){ /* limit scopes */ }
+      if(SELECTS[f]){
+        let optsList=SELECTS[f]; if(f==='scope'&&opts.level) optsList=optsList.filter(x=>x[0]==='any'||x[0]==='tag');
+        fr.append(h('select',{onchange:e=>{o[f]=e.target.value;onStruct();}}, optsList.map(([v,t])=>h('option',{value:v,selected:v===o[f]},t))));
+      } else if(f==='n'){
+        fr.append(h('input',{type:'number',min:0,value:o.n,oninput:e=>o.n=+e.target.value}));
+      } else {
+        fr.append(h('input',{type:'text',placeholder:f==='res'&&(o.type==='pay')?'resource (* = any)':f,list:f==='tag'?'dl-tags':'dl-res',value:o[f],size:12,oninput:e=>o[f]=e.target.value}));
+      }
+    }
+    fr.append(h('button',{class:'btn sm bad',onclick:()=>{arr.splice(idx,1);onStruct();}},'✕'));
+    box.append(fr);
+  });
+  box.append(h('button',{class:'btn sm',onclick:()=>{arr.push(mkRow(T,allowed[0]));onStruct();}},'+ '+opts.add));
+  return box;
+}
+const sub = (title,...k) => h('div',{class:'sub'},h('h4',{},title),...k);
+
+let ui={tab:'design', sel:null, edit:null};
+function tagInput(arr,onChange){
+  return h('input',{type:'text',size:28,placeholder:'comma, separated, tags',value:arr.join(', '),
+    oninput:e=>{ arr.length=0; e.target.value.split(',').map(s=>s.trim()).filter(Boolean).forEach(t=>arr.push(t)); onChange&&onChange(); }});
+}
+function renderEditor(){
+  const E=ui.edit; const root=h('div',{});
+  const redo=()=>{ draw(); };
+  const o=E.obj; const isCard=E.kind==='c';
+  const preview=h('div',{});
+  const refreshPreview=()=>{ preview.replaceChildren(isCard?cardFace(o):levelFace(o)); };
+  const form=h('div',{});
+  const put=(...k)=>form.append(...k.flat(Infinity));
+  const draw=()=>{
+    form.replaceChildren();
+    if(isCard){
+      put(
+        h('div',{class:'fr'},h('label',{},'Number'),h('input',{type:'number',min:1,value:o.id,oninput:e=>{o.id=+e.target.value;}}),
+          h('label',{},'Name'),h('input',{type:'text',value:o.name,oninput:e=>{o.name=e.target.value;}})),
+        sub('Tags',tagInput(o.tags)),
+        sub('Storable resources (blank max = unlimited)',
+          o.stores.map((s,i)=>h('div',{class:'fr'},
+            h('input',{type:'text',list:'dl-res',placeholder:'resource',value:s.res,size:12,oninput:e=>s.res=e.target.value}),
+            h('label',{},'max'),h('input',{type:'number',min:0,value:s.max==null?'':s.max,oninput:e=>s.max=e.target.value===''?null:+e.target.value}),
+            h('button',{class:'btn sm bad',onclick:()=>{o.stores.splice(i,1);redo();}},'✕'))),
+          h('button',{class:'btn sm',onclick:()=>{o.stores.push({res:'',max:null});redo();}},'+ Resource')),
+        h('h4',{class:'muted'},'Abilities'),
+        o.abilities.map((a,i)=>h('div',{class:'ab-ed'},
+          h('div',{class:'fr'},h('input',{type:'text',placeholder:'ability name',value:a.name,oninput:e=>a.name=e.target.value}),
+            h('label',{},h('input',{type:'checkbox',checked:a.mandatory,onchange:e=>{a.mandatory=e.target.checked;}}),' mandatory (auto-resolves when online)'),
+            h('button',{class:'btn sm bad',onclick:()=>{o.abilities.splice(i,1);redo();}},'Delete ability')),
+          sub('Conditions (all must hold)',rowsEditor(a.conds,COND_T,{add:'Condition'},redo)),
+          sub('Costs',rowsEditor(a.costs,COST_T,{add:'Cost'},redo)),
+          sub('Effects',rowsEditor(a.effs,EFF_T,{add:'Effect'},redo)))),
+        h('button',{class:'btn',onclick:()=>{o.abilities.push({name:'New ability',mandatory:false,conds:[],costs:[],effs:[]});redo();}},'+ Ability'));
+    } else {
+      put(
+        h('div',{class:'fr'},h('label',{},'Level'),h('b',{},'#'+o.id),h('label',{},'Name'),h('input',{type:'text',value:o.name,oninput:e=>o.name=e.target.value})),
+        sub('Tags of cards used in this level',tagInput(o.tags)),
+        sub('Card numbers that start OUT of play (comma separated)',
+          h('input',{type:'text',size:24,value:o.outOfPlay.join(', '),oninput:e=>{ o.outOfPlay=e.target.value.split(',').map(s=>parseInt(s)).filter(n=>n>0); }})),
+        sub('Conditions to bring a card into play',rowsEditor(o.bringConds,COND_T,{add:'Condition',allowed:['tagCount','resCount'],level:1},redo)),
+        sub('Costs to bring a card into play',rowsEditor(o.bringCosts,COST_T,{add:'Cost',allowed:['pay','exCard','detach'],level:1},redo)),
+        sub('Costs to COMPLETE the level',rowsEditor(o.goalCosts,COST_T,{add:'Cost',allowed:['pay','exCard','detach'],level:1},redo)));
+    }
+    refreshPreview();
+  };
+  draw();
+  const save=()=>{
+    if(isCard){
+      if(!(o.id>0)) return alert('Card number must be positive.');
+      if(deck.cards.some(c=>c.id===o.id && c!==E.orig)) return alert('That card number is already used.');
+      o.tags=o.tags.filter(Boolean); o.stores=o.stores.filter(s=>s.res);
+      if(E.orig){ Object.assign(E.orig,o); if(E.origId!==o.id){ deck.order=deck.order.map(s=>s==='c:'+E.origId?'c:'+o.id:s); deck.levels.forEach(l=>l.outOfPlay=l.outOfPlay.map(n=>n===E.origId?o.id:n)); } }
+      else { deck.cards.push(o); deck.order.push('c:'+o.id); deck.nextCard=Math.max(deck.nextCard,o.id+1); }
+      ui.sel='c:'+o.id;
+    } else {
+      if(E.orig) Object.assign(E.orig,o); else { deck.levels.push(o); deck.order.push('l:'+o.id); deck.nextLevel=o.id+1; }
+      ui.sel='l:'+o.id;
+    }
+    G=newGame(); history=[]; ui.edit=null; saveAll(); render();
+  };
+  root.append(h('div',{class:'row noprint',style:{marginBottom:'8px'}},
+    h('button',{class:'btn pri',onclick:save},'Save'),
+    h('button',{class:'btn',onclick:()=>{ui.edit=null;render();}},'Cancel'),
+    h('span',{class:'muted'},'Saving changes to the deck resets your current game.')),
+    h('div',{style:{display:'flex',gap:'20px',flexWrap:'wrap',alignItems:'flex-start'}},
+      h('div',{style:{flex:'1 1 460px'}},form),
+      h('div',{style:{position:'sticky',top:'70px'}},h('div',{class:'muted'},'Preview (live on any change in the form; click here to refresh)'),
+        h('div',{onclick:refreshPreview,onmouseenter:refreshPreview},preview))));
+  return root;
+}
+
+function startEdit(kind,orig){
+  let obj;
+  if(orig) obj=clone(orig);
+  else if(kind==='c') obj={id:deck.nextCard,name:'New Card',tags:[],stores:[],abilities:[]};
+  else obj={id:deck.nextLevel,name:'New Level',tags:[],outOfPlay:[],bringConds:[],bringCosts:[],goalCosts:[]};
+  ui.edit={kind,obj,orig,origId:orig&&orig.id}; render();
+}
+function moveOrder(i,d){ const j=i+d; if(j<0||j>=deck.order.length) return; [deck.order[i],deck.order[j]]=[deck.order[j],deck.order[i]]; G=newGame(); history=[]; saveAll(); render(); }
+function removeItem(i){
+  const it=parseOrder(deck.order[i]);
+  if(!confirm(`Delete ${it.k==='c'?'card #':'level '}${it.id}?`)) return;
+  deck.order.splice(i,1);
+  if(it.k==='c') deck.cards=deck.cards.filter(c=>c.id!==it.id); else deck.levels=deck.levels.filter(l=>l.id!==it.id);
+  ui.sel=null; G=newGame(); history=[]; saveAll(); render();
+}
+function exportJSON(){
+  const a=h('a',{href:URL.createObjectURL(new Blob([JSON.stringify(deck,null,1)],{type:'application/json'})),download:'conversion-deck.json'});
+  document.body.append(a); a.click(); a.remove();
+}
+function importJSON(){
+  const inp=h('input',{type:'file',accept:'.json,application/json',onchange:async e=>{
+    try{ const d=JSON.parse(await e.target.files[0].text()); if(!d.cards||!d.levels||!d.order) throw 0; deck=d; G=newGame(); history=[]; ui.sel=null; saveAll(); render(); }
+    catch(err){ alert('That file is not a valid deck.'); } }});
+  inp.click();
+}
+function renderDesign(){
+  if(ui.edit) return renderEditor();
+  const list=h('div',{class:'decklist'});
+  deck.order.forEach((s,i)=>{
+    const it=parseOrder(s); const def=it.k==='c'?cardDef(it.id):levelDef(it.id);
+    list.append(h('div',{class:'it'+(it.k==='l'?' lv':'')+(ui.sel===s?' sel':''),onclick:()=>{ui.sel=s;render();}},
+      h('span',{class:'n'},(it.k==='c'?'#':'LVL ')+it.id), h('span',{class:'nm'},def?def.name:'?'),
+      h('button',{class:'btn sm',title:'move toward top',onclick:e=>{e.stopPropagation();moveOrder(i,-1);}},'↑'),
+      h('button',{class:'btn sm',title:'move toward bottom',onclick:e=>{e.stopPropagation();moveOrder(i,1);}},'↓')));
+  });
+  const selIdx=deck.order.indexOf(ui.sel);
+  const right=h('div',{});
+  if(selIdx>=0){
+    const it=parseOrder(ui.sel);
+    right.append(h('div',{class:'row',style:{marginBottom:'10px'}},
+      h('button',{class:'btn pri',onclick:()=>startEdit(it.k,it.k==='c'?cardDef(it.id):levelDef(it.id))},'Edit'),
+      h('button',{class:'btn bad',onclick:()=>removeItem(selIdx)},'Delete')), faceFor(it));
+  } else right.append(h('p',{class:'muted'},'Select a card or level to preview it. The list is the deck from TOP (first drawn) to bottom.'));
+  return h('div',{class:'split'},
+    h('div',{class:'panel'},
+      h('div',{class:'row',style:{marginBottom:'8px'}},
+        h('button',{class:'btn pri',onclick:()=>startEdit('c')},'+ Card'),
+        h('button',{class:'btn',onclick:()=>startEdit('l')},'+ Level')),
+      list,
+      h('hr',{style:{borderColor:'var(--line)',margin:'12px 0'}}),
+      h('div',{class:'row'},
+        h('button',{class:'btn sm',onclick:exportJSON},'Export'),
+        h('button',{class:'btn sm',onclick:importJSON},'Import'),
+        h('button',{class:'btn sm bad',onclick:()=>{ if(confirm('Replace your deck with the starter deck?')){ deck=fixSample(sampleDeck()); G=newGame(); history=[]; ui.sel=null; saveAll(); render(); } }},'Reset to starter'))),
+    h('div',{class:'panel'},right));
+}
+
+/* ===================================================================
+   Print tab
+=================================================================== */
+function renderPrint(){
+  const items=deck.order.map(parseOrder);
+  const area=h('div',{id:'printArea'});
+  for(let i=0;i<items.length;i+=9) area.append(h('div',{class:'sheet'},items.slice(i,i+9).map(faceFor)));
+  return h('div',{},
+    h('div',{class:'panel noprint',style:{marginBottom:'14px'}},
+      h('div',{class:'row'},h('button',{class:'btn pri',onclick:()=>window.print()},'Print / Save PDF'),
+        h('span',{class:'muted'},`${items.length} cards, 9 per page, in deck order (page 1 first, top-left first). Print at 100% scale on Letter paper, then cut along the dashed lines. Stack them in print order: first printed on top.`))),
+    area);
+}
+
+/* ===================================================================
+   Play tab
+=================================================================== */
+function ctlFor(inst){
+  return { can:i=>canUse(inst,i), use:i=>useAbility(inst,i), manual:ui.manual?(r,d)=>manualAdjust(inst,r,d):null };
+}
+function slotFor(inst){
+  const d=cardDef(inst.num);
+  const wrap=h('div',{class:'slot'}, cardFace(d,inst,ctlFor(inst)));
+  const kids=G.inPlay.filter(c=>c.parent===inst.iid);
+  if(kids.length) wrap.append(h('div',{class:'att'},kids.map(slotFor)));
+  return wrap;
+}
+function renderPlay(){
+  const root=h('div',{});
+  const total=deck.order.length;
+  root.append(h('div',{class:'stat'},
+    h('div',{},`Deck: ${total-G.pos} left`), h('div',{},`Unlocked: ${G.unlocked.length}`), h('div',{},`Levels done: ${G.done.length}/${deck.levels.length}`),
+    h('div',{class:'row'},
+      h('button',{class:'btn sm',disabled:!history.length,onclick:undo},'↶ Undo'),
+      h('button',{class:'btn sm bad',onclick:newRun},'New run'),
+      G.phase==='level'?h('label',{class:'muted'},h('input',{type:'checkbox',checked:ui.manual,onchange:e=>{ui.manual=e.target.checked;render();}}),' manual ± resources'):null)));
+  const main=h('div',{class:'panel'});
+  const unlockedPile=()=>h('div',{style:{marginTop:'10px'}},h('div',{class:'muted'},'Unlocked pile'),
+    h('div',{class:'pile'},G.unlocked.length?G.unlocked.map(n=>h('span',{class:'mini'},'#'+n+' '+cardDef(n).name)):h('span',{class:'muted'},'empty')));
+  if(G.phase==='draw'){
+    main.append(h('h2',{},'Draw phase'),h('p',{},'Reveal cards from the top of the deck into your unlocked pile until you hit a level card.'),
+      h('div',{class:'row'},h('button',{class:'btn pri',onclick:drawUntilLevel},'Draw until level'),h('button',{class:'btn',onclick:drawSingle},'Draw one')),unlockedPile());
+  } else if(G.phase==='levelready'){
+    const L=levelDef(G.level);
+    main.append(h('h2',{},'Level reached'),h('div',{class:'board'},levelFace(L),
+      h('div',{style:{maxWidth:'420px'}},h('p',{},`Cards in your unlocked pile with tags ${L.tags.map(t=>`[${t}]`).join(' ')} will be set up. `+
+        (L.outOfPlay.length?`Cards ${L.outOfPlay.map(n=>'#'+n).join(', ')} (if unlocked) start out of play.`:'All start in play.')),
+        h('div',{class:'row'},h('button',{class:'btn pri',onclick:beginLevel},'Set up level'),h('button',{class:'btn',onclick:drawSingle,disabled:true,style:{display:'none'}}))),unlockedPile()));
+  } else if(G.phase==='won'){
+    main.append(h('h2',{},'🏆 You finished the deck!'),h('button',{class:'btn pri',onclick:()=>{G=newGame();history=[];saveAll();render();}},'Play again'));
+  } else {
+    const L=levelDef(G.level);
+    const canWin=dry((S,l)=>levelCosts(S,[],L.goalCosts,l));
+    main.append(h('div',{class:'row',style:{marginBottom:'10px'}},h('h2',{style:{margin:0}},`Level ${L.id}: ${L.name}`),
+      h('button',{class:'btn pri',disabled:!canWin,onclick:completeLevel},'Complete level'),
+      h('button',{class:'btn sm',onclick:restartLevel},'Restart level')),
+      h('div',{class:'muted',style:{marginBottom:'10px'}},'To complete: '+(L.goalCosts.map(costText).join('; ')||'nothing')));
+    main.append(h('div',{class:'board'}, G.inPlay.filter(c=>!c.parent).map(slotFor)));
+    if(G.outPlay.length){
+      const okBring = dry((S,l)=>levelCosts(S,L.bringConds,L.bringCosts,l));
+      main.append(h('h3',{style:{marginTop:'18px'}},'Out of play'),
+        h('div',{class:'muted',style:{marginBottom:'8px'}},'To bring one in: '+([L.bringConds.length?'if '+L.bringConds.map(condText).join('; '):'',L.bringCosts.map(costText).join('; ')].filter(Boolean).join(' — ')||'free')),
+        h('div',{class:'board'},G.outPlay.map(i=>h('div',{class:'slot'},cardFace(cardDef(i.num)),
+          h('button',{class:'btn',disabled:!okBring,onclick:()=>bringIn(i)},'Bring into play')))));
+    }
+  }
+  root.append(main);
+  root.append(h('div',{class:'panel',style:{marginTop:'14px'}},h('h3',{},'Log'),
+    h('div',{class:'log',id:'log'},G.log.slice(-80).map(m=>h('div',{},m)))));
+  root.append(h('details',{class:'panel',style:{marginTop:'14px'}},h('summary',{},'Rules'),h('div',{class:'muted'},
+    h('p',{},'Draw cards from the top of the deck into the unlocked pile until you reach a level card. Set up the level: every unlocked card sharing a level tag goes in play, except the cards the level lists as out of play.'),
+    h('p',{},'Resolve optional abilities in any order: pay the cost, then apply the effects. Mandatory abilities resolve instantly the moment their conditions and costs can be met. Gained resources that no card can store are lost; storage caps apply.'),
+    h('p',{},'Attached cards count as in play. Detaching a card (and anything attached to it) returns it out of play, emptied and ready. Complete the level by paying its cost, then keep drawing.'))));
+  return root;
+}
+
+/* ===================================================================
+   Shell
+=================================================================== */
+function render(){
+  refreshLists();
+  const tabs=[['design','Design'],['print','Print'],['play','Play']];
+  $('#nav').replaceChildren(...tabs.map(([k,t])=>h('button',{class:ui.tab===k?'on':'',onclick:()=>{ui.tab=k;try{localStorage.setItem('cd.tab',k)}catch(e){}render();}},t)));
+  const main=$('#main');
+  main.replaceChildren(ui.tab==='design'?renderDesign():ui.tab==='print'?renderPrint():renderPlay());
+  const lg=$('#log'); if(lg) lg.scrollTop=lg.scrollHeight;
+}
+loadAll();
+try{ const t=localStorage.getItem('cd.tab'); if(t) ui.tab=t; }catch(e){}
+render();
+</script>
+</body>
+</html>
