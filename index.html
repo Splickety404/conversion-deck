@@ -59,6 +59,11 @@ input[type=number]{width:60px}
 .card .ab .t i{font-weight:400;font-size:7pt;opacity:.7}
 .card .ab .d{font-size:7.8pt}
 .card .ab .d b{font-weight:600}
+.card.back{align-items:center;justify-content:center;background:#2b3548;border-color:#e0b04a;color:#e0b04a;text-align:center}
+.card.back.level{background:#6b4f0c;color:#f1d98b;border-color:#f1d98b}
+.card.back .bk{font-size:40pt;line-height:1}
+.card.back .bkt{font-size:10pt;letter-spacing:.2em;font-weight:700;margin-top:8px}
+.card.back .bks{font-size:9pt;letter-spacing:.3em}
 .card.small{transform-origin:top left}
 /* ---------- play ---------- */
 .board{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-start}
@@ -155,7 +160,8 @@ function sampleDeck(){
         A('Fire Bricks',false,[],[{type:'exSelf'},pay(2,'stone')],[{type:'gain',n:1,res:'brick',target:'self'}])]},
       {id:6,name:'Compost Heap',tags:['Land'],stores:[{res:'compost',max:3}],abilities:[
         A('Rot',true,[{type:'resCount',res:'wood',op:'>',n:4}],[pay(1,'wood')],[{type:'gain',n:1,res:'compost',target:'self'}])]},
-      {id:7,name:'Hammer',tags:['Tool'],stores:[],abilities:[]},
+      {id:7,name:'Hammer',tags:['Tool'],stores:[],abilities:[
+        A('Equip',false,[],[{type:'exSelf'}],[{type:'attach',src:'self',srcTag:'',dst:'tag',dstTag:'Building'}])]},
       {id:8,name:'Foreman',tags:['Tool'],stores:[],abilities:[
         A('Inspire',false,[{type:'isReady'}],[{type:'exSelf'}],[{type:'ready',rmode:'card',tag:'Building',res:''}])]},
     ],
@@ -180,6 +186,8 @@ let deck, G;
 function loadAll(){
   try { deck = JSON.parse(localStorage.getItem('cd.deck.v1')); } catch(e){}
   if (!deck || !deck.cards) deck = fixSample(sampleDeck());
+  const hm = deck.cards.find(c=>c.id===7);
+  if (hm && hm.name==='Hammer' && !hm.abilities.length) hm.abilities = sampleDeck().cards[6].abilities; // starter migration
   try { G = JSON.parse(localStorage.getItem('cd.game.v1')); } catch(e){}
   if (!G || !G.phase) G = newGame();
 }
@@ -232,6 +240,10 @@ function effText(e){
       if (e.target==='self') return `Gain ${e.n} ${e.res||'?'} on this card`;
       if (e.target==='tag') return `Gain ${e.n} ${e.res||'?'} on a [${e.tag||'?'}] card`;
       return `Gain ${e.n} ${e.res||'?'} (divide freely among your cards)`;
+    case 'attach': {
+      const src=e.src==='self'?'this card':e.src==='out'?`an out-of-play card${e.srcTag?` with [${e.srcTag}]`:''}`:`a card${e.srcTag?` with [${e.srcTag}]`:''}`;
+      const dst=e.dst==='self'?'this card':`a card${e.dstTag?` with [${e.dstTag}]`:''}`;
+      return `Attach ${src} to ${dst}`; }
     case 'ready': return e.rmode==='self' ? 'Ready this card' : `Ready a card${filtText({tag:e.tag,res:e.res,n:1})}`;
   } return '?';
 }
@@ -257,7 +269,7 @@ function cardFace(def, inst, ctl){
     el.append(h('div',{class:'sec'},'Stores'));
     el.append(h('div',{class:'stores'}, def.stores.map(s=>{
       const cur = inst ? (inst.res[s.res]||0) : null;
-      const txt = inst ? `${s.res} ${cur}${s.max!=null?'/'+s.max:''}` : `${s.res}${s.max!=null?' (max '+s.max+')':''}`;
+      const txt = inst ? `${s.res} ${cur}${s.max!=null?'/'+s.max:''}` : `${s.res}${(s.max!=null||s.start)?' ('+[s.max!=null?'max '+s.max:'',s.start?'start '+s.start:''].filter(Boolean).join(', ')+')':''}`;
       const c = resChip(s.res, txt);
       if (inst && ctl && ctl.manual) c.append(h('span',{class:'plusminus'},
         h('button',{onclick:()=>ctl.manual(s.res,-1)},'−'), h('button',{onclick:()=>ctl.manual(s.res,1)},'+')));
@@ -297,6 +309,9 @@ function levelFace(l){
   el.append(h('div',{class:'ab m'}, h('div',{class:'d'}, l.goalCosts.length? l.goalCosts.map(costText).join('; ') : 'Nothing — free')));
   return el;
 }
+function cardBack(level){
+  return h('div',{class:'card back'+(level?' level':'')}, h('div',{class:'bk'}, level?'◈':'◇', h('div',{class:'bkt'},'CONVERSION DECK'), h('div',{class:'bks'},level?'LEVEL':'')));
+}
 const faceFor = it => it.k==='c' ? cardFace(cardDef(it.id)) : levelFace(levelDef(it.id));
 const parseOrder = s => ({k:s[0], id:+s.slice(2)});
 
@@ -312,7 +327,7 @@ function resKey(inst,res){ const s=storeDef(inst,res); return s?s.res:res; }
 const amt = (inst,res) => inst.res[resKey(inst,res)]||0;
 function room(inst,res){ const s=storeDef(inst,res); if(!s) return 0; return s.max==null?Infinity:Math.max(0,s.max-(inst.res[s.res]||0)); }
 function addRes(inst,res,n){ const s=storeDef(inst,res); if(!s) return 0; const k=Math.min(n,room(inst,res)); inst.res[s.res]=(inst.res[s.res]||0)+k; return k; }
-function makeInst(S,num){ const d=cardDef(num); const res={}; d.stores.forEach(s=>res[s.res]=0); return {iid:S.nextIid++, num, ready:true, res, parent:null}; }
+function makeInst(S,num){ const d=cardDef(num); const res={}; d.stores.forEach(s=>res[s.res]=s.max==null?(s.start||0):Math.min(s.max,s.start||0)); return {iid:S.nextIid++, num, ready:true, res, parent:null}; }
 const ins = (S,iid) => S.inPlay.find(c=>c.iid===iid) || S.outPlay.find(c=>c.iid===iid);
 
 function evalCond(S,c,host){
@@ -398,6 +413,19 @@ function* applyEffect(S,e,host,log){
     else if(items.reduce((a,x)=>a+x.max,0)===total) put=items.map(x=>x.max);
     else put=yield {kind:'alloc',title:`Divide ${total} ${e.res} among your cards`,items,total};
     items.forEach((x,k)=>{ if(put[k]){ addRes(x.inst,e.res,put[k]); log.push(`+${put[k]} ${e.res} on ${label(S,x.inst)}`);} });
+  } else if(e.type==='attach'){
+    const tagOK=(i,t)=>!t||hasTag(i,t);
+    const isDesc=(x,anc)=>{ for(let p=x.parent;p;){ if(p===anc.iid) return true; const q=S.inPlay.find(c=>c.iid===p); p=q&&q.parent; } return false; };
+    const dstFor=src=>(e.dst==='self'?(host?[host]:[]):S.inPlay.filter(i=>tagOK(i,e.dstTag)))
+      .filter(d=>d.iid!==src.iid&&!isDesc(d,src)&&d.parent!==src.iid&&src.parent!==d.iid);
+    const pool=e.src==='self'?(host?[host]:[]):e.src==='out'?S.outPlay.filter(i=>tagOK(i,e.srcTag)):S.inPlay.filter(i=>tagOK(i,e.srcTag));
+    const srcs=pool.filter(i=>dstFor(i).length);
+    if(!srcs.length){ log.push('nothing to attach'); return; }
+    const src=srcs.length===1?srcs[0]:yield {kind:'pick',title:'Attach which card?',cands:srcs};
+    const dsts=dstFor(src);
+    const dst=dsts.length===1?dsts[0]:yield {kind:'pick',title:`Attach ${label(S,src)} to which card?`,cands:dsts};
+    if(!S.inPlay.includes(src)){ S.outPlay=S.outPlay.filter(c=>c.iid!==src.iid); S.inPlay.push(src); src.ready=true; }
+    src.parent=dst.iid; log.push(`attach ${label(S,src)} to ${label(S,dst)}`);
   } else if(e.type==='ready'){
     if(e.rmode==='self'){ if(host){ host.ready=true; log.push(`ready ${label(S,host)}`);} return; }
     const cands=S.inPlay.filter(i=>!i.ready&&matchFilter(i,{tag:e.tag,res:e.res,n:1}));
@@ -497,11 +525,7 @@ function bringIn(inst){ return act(async()=>{
   const L=levelDef(G.level); const log=[];
   const ok=await runAsync(levelCosts(G,L.bringConds,L.bringCosts,log));
   if(!ok){ say('Cannot bring that card into play.'); throw 'cancel'; }
-  let host=null;
-  if(G.inPlay.length){
-    const choice=await askUser({kind:'pick',title:`Bring ${label(G,inst)} into play — attach it to a card?`,cands:G.inPlay,extra:'Just put it into play (not attached)'});
-    host=choice&&choice!=='none'?choice:null;
-  }
+  const host=null;
   const real=ins(G,inst.iid); G.outPlay=G.outPlay.filter(c=>c.iid!==inst.iid);
   real.parent=host?host.iid:null; real.ready=true; G.inPlay.push(real);
   say(`➕ ${label(G,real)} enters play${host?' attached to '+label(G,host):''}${log.length?' — '+log.join('; '):''}`);
@@ -574,21 +598,26 @@ const COST_T = {
 const EFF_T = {
   gain:['Gain resource',['n','res','target','tag']],
   ready:['Ready a card',['rmode','tag','res']],
+  attach:['Attach a card',['src','srcTag','dst','dstTag']],
 };
 const SELECTS = {
   op:[['<','fewer than'],['<=','at most'],['=','exactly'],['>=','at least'],['>','more than']],
   scope:[['self','this card'],['any','any cards in play'],['tag','cards in play with tag'],['att','cards attached to this'],['atttag','attached cards with tag']],
   target:[['free','divide among cards'],['self','this card'],['tag','a card with tag']],
   rmode:[['self','this card'],['card','a card…']],
+  src:[['self','this card'],['tag','a card in play (tag optional)'],['out','an out-of-play card (tag optional)']],
+  dst:[['self','this card'],['tag','a card in play (tag optional)']],
 };
 const FIELD_LABEL = {tag:'tag',res:'resource',n:'#',op:'',scope:'from',target:'on',rmode:''};
-const DEFAULTS = {tag:'',res:'',op:'>=',n:1,scope:'any',target:'free',rmode:'card'};
+const DEFAULTS = {src:'self',dst:'tag',srcTag:'',dstTag:'',tag:'',res:'',op:'>=',n:1,scope:'any',target:'free',rmode:'card'};
 function visible(o,f){
   if(f==='tag'){ if(o.type==='pay') return o.scope==='tag'||o.scope==='atttag'; if(o.type==='gain') return o.target==='tag'; return true; }
+  if(f==='srcTag') return o.src!=='self';
+  if(f==='dstTag') return o.dst==='tag';
   if(f==='n' && (o.type==='exCard'||o.type==='detach')) return true;
   return true;
 }
-function mkRow(T,type){ const o={type}; for(const f of T[type][1]) o[f]=DEFAULTS[f]; if(type==='gain') o.target='self'; if(type==='ready') o.rmode='card'; return o; }
+function mkRow(T,type){ const o={type}; for(const f of T[type][1]) o[f]=DEFAULTS[f]; if(type==='gain') o.target='self'; if(type==='ready') o.rmode='card'; if(type==='attach'){o.src='self';o.dst='tag';} return o; }
 
 function rowsEditor(arr,T,opts,onStruct){
   const box=h('div',{});
@@ -600,6 +629,7 @@ function rowsEditor(arr,T,opts,onStruct){
     fr.append(typeSel);
     for(const f of T[o.type][1]){
       if(!visible(o,f)) continue;
+      if(f==='dst') fr.append(h('label',{},'to'));
       if(f==='scope' && opts.level){ /* limit scopes */ }
       if(SELECTS[f]){
         let optsList=SELECTS[f]; if(f==='scope'&&opts.level) optsList=optsList.filter(x=>x[0]==='any'||x[0]==='tag');
@@ -607,7 +637,7 @@ function rowsEditor(arr,T,opts,onStruct){
       } else if(f==='n'){
         fr.append(h('input',{type:'number',min:0,value:o.n,oninput:e=>o.n=+e.target.value}));
       } else {
-        fr.append(h('input',{type:'text',placeholder:f==='res'&&(o.type==='pay')?'resource (* = any)':f,list:f==='tag'?'dl-tags':'dl-res',value:o[f],size:12,oninput:e=>o[f]=e.target.value}));
+        fr.append(h('input',{type:'text',placeholder:f==='res'&&(o.type==='pay')?'resource (* = any)':/tag/i.test(f)?'tag':f,list:/tag/i.test(f)?'dl-tags':'dl-res',value:o[f],size:12,oninput:e=>o[f]=e.target.value}));
       }
     }
     fr.append(h('button',{class:'btn sm bad',onclick:()=>{arr.splice(idx,1);onStruct();}},'✕'));
@@ -618,7 +648,7 @@ function rowsEditor(arr,T,opts,onStruct){
 }
 const sub = (title,...k) => h('div',{class:'sub'},h('h4',{},title),...k);
 
-let ui={tab:'design', sel:null, edit:null};
+let ui={tab:'design', sel:null, edit:null, backs:false};
 function tagInput(arr,onChange){
   return h('input',{type:'text',size:28,placeholder:'comma, separated, tags',value:arr.join(', '),
     oninput:e=>{ arr.length=0; e.target.value.split(',').map(s=>s.trim()).filter(Boolean).forEach(t=>arr.push(t)); onChange&&onChange(); }});
@@ -638,10 +668,10 @@ function renderEditor(){
         h('div',{class:'fr'},h('label',{},'Number'),h('input',{type:'number',min:1,value:o.id,oninput:e=>{o.id=+e.target.value;}}),
           h('label',{},'Name'),h('input',{type:'text',value:o.name,oninput:e=>{o.name=e.target.value;}})),
         sub('Tags',tagInput(o.tags)),
-        sub('Storable resources (blank max = unlimited)',
+        sub('Storable resources (blank max = unlimited; start = amount when the card enters play)',
           o.stores.map((s,i)=>h('div',{class:'fr'},
             h('input',{type:'text',list:'dl-res',placeholder:'resource',value:s.res,size:12,oninput:e=>s.res=e.target.value}),
-            h('label',{},'max'),h('input',{type:'number',min:0,value:s.max==null?'':s.max,oninput:e=>s.max=e.target.value===''?null:+e.target.value}),
+            h('label',{},'max'),h('input',{type:'number',min:0,value:s.max==null?'':s.max,oninput:e=>s.max=e.target.value===''?null:+e.target.value}),h('label',{},'start with'),h('input',{type:'number',min:0,value:s.start||0,oninput:e=>s.start=+e.target.value||0}),
             h('button',{class:'btn sm bad',onclick:()=>{o.stores.splice(i,1);redo();}},'✕'))),
           h('button',{class:'btn sm',onclick:()=>{o.stores.push({res:'',max:null});redo();}},'+ Resource')),
         h('h4',{class:'muted'},'Abilities'),
@@ -754,10 +784,17 @@ function renderDesign(){
 function renderPrint(){
   const items=deck.order.map(parseOrder);
   const area=h('div',{id:'printArea'});
-  for(let i=0;i<items.length;i+=9) area.append(h('div',{class:'sheet'},items.slice(i,i+9).map(faceFor)));
+  for(let i=0;i<items.length;i+=9){
+    const chunk=items.slice(i,i+9); while(chunk.length<9) chunk.push(null);
+    area.append(h('div',{class:'sheet'},chunk.filter(Boolean).map(faceFor)));
+    if(ui.backs){ // mirror each row so fronts and backs line up when printed double-sided (flip on long edge)
+      const m=[]; for(let r=0;r<3;r++) m.push(chunk[r*3+2],chunk[r*3+1],chunk[r*3]);
+      area.append(h('div',{class:'sheet'},m.map(it=>it?cardBack(it.k==='l'):h('div',{}))));
+    }
+  }
   return h('div',{},
     h('div',{class:'panel noprint',style:{marginBottom:'14px'}},
-      h('div',{class:'row'},h('button',{class:'btn pri',onclick:()=>window.print()},'Print / Save PDF'),
+      h('div',{class:'row'},h('button',{class:'btn pri',onclick:()=>window.print()},'Print / Save PDF'),h('label',{},h('input',{type:'checkbox',checked:ui.backs,onchange:e=>{ui.backs=e.target.checked;render();}}),' include card backs (print double-sided, flip on long edge)'),
         h('span',{class:'muted'},`${items.length} cards, 9 per page, in deck order (page 1 first, top-left first). Print at 100% scale on Letter paper, then cut along the dashed lines. Stack them in print order: first printed on top.`))),
     area);
 }
@@ -820,7 +857,7 @@ function renderPlay(){
   root.append(h('details',{class:'panel',style:{marginTop:'14px'}},h('summary',{},'Rules'),h('div',{class:'muted'},
     h('p',{},'Draw cards from the top of the deck into the unlocked pile until you reach a level card. Set up the level: every unlocked card sharing a level tag goes in play, except the cards the level lists as out of play.'),
     h('p',{},'Resolve optional abilities in any order: pay the cost, then apply the effects. Mandatory abilities resolve instantly the moment their conditions and costs can be met. Gained resources that no card can store are lost; storage caps apply.'),
-    h('p',{},'Attached cards count as in play. Detaching a card (and anything attached to it) returns it out of play, emptied and ready. Complete the level by paying its cost, then keep drawing.'))));
+    h('p',{},'Cards are only attached when an effect says so. Attached cards count as in play. Detaching a card (and anything attached to it) returns it out of play, emptied and ready. Complete the level by paying its cost, then keep drawing.'))));
   return root;
 }
 
