@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Conversion Deck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#16181d;--panel:#1f232b;--panel2:#272c36;--ink:#e8e6df;--mute:#9aa0ab;--line:#394050;--acc:#e0b04a;--good:#6cc784;--bad:#e06c6c;--card:#f4ecd8;--cardink:#2b2418}
 *{box-sizing:border-box}
@@ -38,42 +39,88 @@ input[type=number]{width:60px}
 .fr label{color:var(--mute);font-size:12px}
 .ab-ed{border:1px solid var(--acc);border-radius:8px;padding:8px;margin:10px 0}
 .muted{color:var(--mute)}
-/* ---------- card face ---------- */
-.card{width:2.5in;height:3.5in;background:var(--card);color:var(--cardink);border:2px solid #5a4a2a;border-radius:10px;padding:7px 8px;display:flex;flex-direction:column;gap:4px;overflow:hidden;font-size:8.5pt;line-height:1.2;position:relative}
-.card.level{background:#f1d98b;border-color:#8a6a10;border-width:3px}
-.card .hd{display:flex;align-items:center;gap:6px;border-bottom:1px solid #5a4a2a55;padding-bottom:3px}
-.card .num{background:#2b2418;color:#f4ecd8;border-radius:4px;padding:0 5px;font-weight:700;font-size:9pt}
-.card.level .num{background:#8a6a10}
-.card .nm{font-weight:700;font-size:11pt;flex:1}
-.card .tags{display:flex;gap:3px;flex-wrap:wrap}
-.chip{display:inline-block;border-radius:9px;padding:0 6px;font-size:7.5pt;border:1px solid #0003;background:#0001;white-space:nowrap}
-.chip.res{color:#fff;border:0}
-.chip.tag{background:#2b241818}
-.card .sec{font-size:6.5pt;text-transform:uppercase;letter-spacing:.06em;opacity:.65;margin-top:2px}
-.card .stores{display:flex;gap:3px;flex-wrap:wrap}
-.card .abs{display:flex;flex-direction:column;gap:4px;flex:1}
-.card .ab{border:1px solid #5a4a2a66;border-radius:5px;padding:3px 5px;background:#ffffff55}
-.card .ab.m{border-left:4px solid #b0402a}
-.card .ab.o{border-left:4px solid #3a7d4a}
-.card .ab .t{display:flex;gap:5px;font-weight:700}
-.card .ab .t i{font-weight:400;font-size:7pt;opacity:.7}
-.card .ab .d{font-size:7.8pt}
-.card .ab .d b{font-weight:600}
-.card.back{align-items:center;justify-content:center;background:#2b3548;border-color:#e0b04a;color:#e0b04a;text-align:center}
-.card.back.level{background:#6b4f0c;color:#f1d98b;border-color:#f1d98b}
-.card.back .bk{font-size:40pt;line-height:1}
-.card.back .bkt{font-size:10pt;letter-spacing:.2em;font-weight:700;margin-top:8px}
-.card.back .bks{font-size:9pt;letter-spacing:.3em}
-.card.small{transform-origin:top left}
+/* ---------- card face (Egyptian theme) ---------- */
+:root{--sand:#ecd9ae;--gold:#c9962b;--lapis:#1f4e8c;--lapisd:#14305a;--turq:#1fa39a;--carn:#b8402f;--mal:#2f7d4f;--ink:#3a2a10}
+.card{--tc:#1f4e8c;width:2.5in;height:3.5in;background:linear-gradient(165deg,#f4e6c0,#e3ca94);color:var(--ink);border:3px solid var(--gold);border-radius:18px;box-shadow:inset 0 0 0 2px #fff7,inset 0 0 0 5px #c9962b44;display:flex;flex-direction:column;overflow:hidden;font:600 8.5pt/1.2 Nunito,system-ui,sans-serif;position:relative}
+.card .band{background:linear-gradient(180deg,var(--tc),color-mix(in srgb,var(--tc) 70%,#000));color:#fff;padding:6px 8px 5px;display:flex;align-items:center;gap:6px;position:relative}
+.card .zig{height:6px;background:linear-gradient(135deg,var(--tc) 25%,transparent 25%) -6px 0,linear-gradient(225deg,var(--tc) 25%,transparent 25%) -6px 0;background-size:12px 6px;flex:none}
+.card .num{background:#f6e7bf;color:var(--ink);border:2px solid #3a2a10;border-radius:999px;padding:0 8px;font:700 9pt Cinzel,serif;box-shadow:inset 0 0 0 1px var(--gold);flex:none}
+.card .nm{font:700 10.5pt/1.1 Cinzel,serif;flex:1;text-shadow:0 1px 1px #0006}
+.card .tagrow{display:flex;gap:3px;flex:none}
+.card .body{padding:2px 8px 4px;display:flex;flex-direction:column;gap:5px;flex:1;min-height:0}
+.card .foot{height:6px;margin:0 10px 6px;background:repeating-linear-gradient(90deg,var(--gold) 0 6px,transparent 6px 9px);opacity:.55;border-radius:3px;flex:none}
+.card .stores{display:flex;gap:6px;flex-wrap:wrap}
+.su{display:flex;align-items:center;gap:4px;background:#fff6;border:1px solid #c9962b88;border-radius:999px;padding:2px 8px 2px 3px}
+.su .pips{display:flex;gap:2px;align-items:center;flex-wrap:wrap;max-width:1.2in}
+.pip{width:8px;height:8px;border-radius:3px;border:1.5px solid var(--ink);background:transparent}
+.pip.on{background:var(--ink)}
+.su .amt{font-weight:800;font-size:8.5pt}
+.ico{display:inline-flex;width:15px;height:15px;flex:none}
+.ico svg{width:100%;height:100%;display:block}
+.tok{position:relative;width:21px;height:21px;border-radius:50%;display:inline-grid;place-items:center;font-size:12px;font-weight:800;color:#fff;box-shadow:inset 0 -2px 0 #0003,inset 0 0 0 1.5px #fff8,0 1px 2px #0004;flex:none;line-height:1}
+.tok.gem{background:conic-gradient(#e0504a,#e0b04a,#4aa86a,#3a8fd0,#9a5ad0,#e0504a)}
+.tok .n{position:absolute;right:-5px;bottom:-5px;min-width:12px;height:12px;border-radius:6px;background:#2a1d0a;color:#fff;font:800 8px/12px Nunito,sans-serif;text-align:center;padding:0 2px;box-shadow:0 0 0 1px #fff9}
+.tg{display:inline-grid;place-items:center;min-width:19px;height:19px;border-radius:7px;background:var(--tg,#555);color:#fff;font:800 9px/1 Nunito,sans-serif;padding:0 3px;box-shadow:inset 0 -2px 0 #0003,inset 0 0 0 1px #fff7;font-size:12px}
+.tg.txt{font-size:8px;padding:0 5px}
+.pill{--ibg:#fff;display:inline-flex;align-items:center;gap:3px;padding:2px 6px 2px 4px;border-radius:999px;border:1.5px solid;font-weight:800;font-size:8.5pt;white-space:nowrap}
+.pill.cd{background:#dfe8f3;border-color:#1f4e8c88;color:#14305a}
+.pill.co{background:#f7dcd5;border-color:#b8402f88;color:#7a2417}
+.pill.ef{background:#d8ecd9;border-color:#2f7d4f88;color:#1c5a35}
+.pill .cmp{font-weight:800}
+.rule{display:flex;flex-direction:column;gap:3px}
+.rg{display:flex;flex-wrap:wrap;gap:4px 5px;align-items:center}
+.rg .arr{color:var(--ink);width:17px;height:17px}
+.rg .qi{color:var(--lapis)}
+.rg .mini{width:12px;height:12px}
+.ab{background:#fffa;border:1.5px solid #c9962b66;border-radius:12px;padding:3px 6px 4px 7px;position:relative;text-align:left}
+.ab::before{content:"";position:absolute;left:0;top:5px;bottom:5px;width:4px;border-radius:0 3px 3px 0;background:var(--mal)}
+.ab.m::before{background:var(--carn)}
+.ab .t{display:flex;align-items:center;gap:4px;font:700 7.5pt Cinzel,serif;margin-bottom:2px;text-transform:uppercase;letter-spacing:.03em}
+.ab .t .mk{width:13px;height:13px}
+.ab.m .t .mk{color:var(--carn)}
+.ab.o .t .mk{color:var(--mal)}
+.ab .d{font-size:7.8pt;font-weight:600}
+.abs{display:flex;flex-direction:column;gap:5px;flex:1}
+.exmark{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;color:#3a2a10;opacity:.35}
+.exmark .ico{width:90px;height:90px}
+.card.level{--tc:#c9962b;background:radial-gradient(circle at 50% 0,#2f66b0,#14305a 70%);color:#f6e6b5;border-color:#e5b94a}
+.card.level .band{background:linear-gradient(180deg,#f0cf70,#c9962b);color:#14305a}
+.card.level .nm{text-shadow:none}
+.card.level .num{background:#14305a;color:#f0cf70;border-color:#14305a}
+.card.level .zig{background:linear-gradient(135deg,#c9962b 25%,transparent 25%) -6px 0,linear-gradient(225deg,#c9962b 25%,transparent 25%) -6px 0;background-size:12px 6px}
+.card.level .panel2{background:#f4e6c0;color:var(--ink);border-radius:12px;padding:4px 7px;display:flex;flex-direction:column;gap:3px}
+.card.level .lab{display:flex;align-items:center;gap:4px;font:700 7pt Cinzel,serif;text-transform:uppercase;letter-spacing:.04em}
+.card.level .foot{background:repeating-linear-gradient(90deg,#f0cf70 0 6px,transparent 6px 9px)}
+.card.level .goal{margin-top:auto;background:linear-gradient(180deg,#f0cf70,#c9962b);color:#14305a;border-radius:14px;padding:5px 8px;display:flex;flex-direction:column;gap:3px;box-shadow:inset 0 0 0 2px #fff6}
+.card.level .goal .rg{background:#f4e6c0;border-radius:10px;padding:3px 5px}
+.oop{display:inline-grid;place-items:center;width:24px;height:32px;border:2px dashed var(--ink);border-radius:5px;font:800 9pt Nunito,sans-serif}
+.card.back{align-items:center;justify-content:center;background:radial-gradient(circle at 50% 40%,#2f66b0,#14305a 75%);border-color:#e5b94a;color:#f0cf70;text-align:center;gap:6px}
+.card.back::before{content:"";position:absolute;inset:8px;border:2px solid #e5b94a88;border-radius:12px}
+.card.back.level{background:radial-gradient(circle at 50% 40%,#f6dc88,#c9962b 75%);color:#14305a;border-color:#14305a}
+.card.back.level::before{border-color:#14305a88}
+.card.back .ico{width:1.4in;height:1.4in}
+.card.back .bkt{font:700 9pt Cinzel,serif;letter-spacing:.25em}
+.card.back .bks{font:700 7.5pt Cinzel,serif;letter-spacing:.35em}
 /* ---------- play ---------- */
 .board{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-start}
-.slot{display:flex;flex-direction:column;gap:6px}
-.card.ex{filter:grayscale(.8) brightness(.75)}
-.card.ex::after{content:"EXHAUSTED";position:absolute;top:34%;left:0;right:0;text-align:center;font-weight:800;font-size:15pt;color:#7a1f1f;transform:rotate(-12deg);opacity:.75;pointer-events:none}
+.slot{display:flex;flex-direction:column;gap:6px;position:relative}
+.slot.hz{flex-direction:row;align-items:flex-start;gap:0}
+.slot.hz>.card{z-index:2;box-shadow:inset 0 0 0 2px #fff7,inset 0 0 0 5px #c9962b44,3px 3px 10px #0008}
+.card{transition:transform .25s,filter .25s}
+.card.ex{filter:grayscale(.85) brightness(.8) sepia(.3);transform:rotate(7deg) scale(.96)}
+.linkbadge{position:absolute;left:-8px;top:46%;z-index:5;background:var(--acc);color:#222;border-radius:50%;width:24px;height:24px;display:grid;place-items:center;box-shadow:0 1px 4px #000a}
+.linkbadge .ico{width:16px;height:16px}
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.6)}100%{transform:scale(1)}}
+.tok.pop{animation:pop .45s ease-out}
+@keyframes glow{0%,100%{box-shadow:0 0 0 0 #e0b04a00}50%{box-shadow:0 0 0 3px #e0b04acc}}
 .card .abtn{display:block;width:100%;text-align:left;cursor:pointer;color:inherit;font:inherit}
-.card button.ab:disabled{opacity:.45;cursor:not-allowed}
-.card button.ab:not(:disabled):hover{background:#fff;box-shadow:0 0 0 2px var(--acc)}
-.att{margin-left:20px;padding-left:8px;border-left:3px dashed var(--acc);display:flex;flex-direction:column;gap:8px}
+.card button.ab:disabled{opacity:.5;cursor:not-allowed;filter:saturate(.5)}
+.card button.ab:not(:disabled){animation:glow 2s infinite;border-color:var(--gold)}
+.card button.ab:not(:disabled):hover{background:#fff}
+.att{margin-left:-22px;padding-left:0;display:flex;gap:12px;align-items:flex-start}
+.symrow{display:flex;gap:6px;align-items:center;margin:4px 0}
+.symrow input[type=text]{width:56px;text-align:center}
+.symrow input[type=color]{width:34px;height:26px;padding:0;border:0;background:none}
 .stat{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:10px}
 .stat div{background:var(--panel2);border-radius:6px;padding:4px 10px}
 .pile{display:flex;flex-wrap:wrap;gap:6px}
@@ -91,7 +138,7 @@ input[type=number]{width:60px}
 .alloc{display:grid;grid-template-columns:auto auto 1fr;gap:6px 10px;align-items:center;margin:10px 0}
 /* ---------- print ---------- */
 #printArea .sheet{display:grid;grid-template-columns:repeat(3,2.5in);grid-auto-rows:3.5in;gap:0;width:7.5in;margin:0 auto 20px;background:#fff}
-#printArea .sheet .card{border-radius:0;border-width:1px;border-style:dashed;border-color:#888}
+#printArea .sheet>*{outline:1px dashed #9a9a9a;outline-offset:-1px}
 @media print{
   @page{margin:.25in}
   body{background:#fff}
@@ -107,7 +154,7 @@ input[type=number]{width:60px}
   <h1>◈ Conversion Deck</h1>
   <nav id="nav"></nav>
   <span style="flex:1"></span>
-  <span class="muted" id="saveNote"></span>
+  <label class="muted"><input type="checkbox" id="txt"> words instead of icons</label><span class="muted" id="saveNote"></span>
 </header>
 <main id="main"></main>
 <datalist id="dl-tags"></datalist>
@@ -134,7 +181,6 @@ function h(tag, attrs, ...kids){
 }
 const clone = o => JSON.parse(JSON.stringify(o));
 const lc = s => String(s||'').trim().toLowerCase();
-function resColor(name){ let x=0; for (const ch of String(name)) x=(x*31+ch.charCodeAt(0))>>>0; return `hsl(${x%360} 55% 38%)`; }
 const OPS = {'<':(a,b)=>a<b,'<=':(a,b)=>a<=b,'=':(a,b)=>a===b,'>=':(a,b)=>a>=b,'>':(a,b)=>a>b};
 const OPT = {'<':'fewer than','<=':'at most','=':'exactly','>=':'at least','>':'more than'};
 
@@ -172,6 +218,7 @@ function sampleDeck(){
         bringConds:[{type:'resCount',res:'plank',op:'>',n:0}],bringCosts:[pay(1,'plank')],
         goalCosts:[pay(2,'brick'),pay(2,'plank'),{type:'exCard',tag:'Tool',res:'',n:1}]},
     ],
+    meta:{resEmoji:{wood:'🪵',stone:'🪨',plank:'📏',brick:'🧱',compost:'🌱'},resColor:{},tagEmoji:{land:'🌴',building:'🏛️',tool:'🛠️'},tagColor:{land:'#2f7d4f',building:'#1f4e8c',tool:'#b8402f'}},
     order: ['c:1','c:2','c:3','l:1','c:4','c:5','c:6','l:2','c:7','c:8']
   };
 }
@@ -186,6 +233,7 @@ let deck, G;
 function loadAll(){
   try { deck = JSON.parse(localStorage.getItem('cd.deck.v1')); } catch(e){}
   if (!deck || !deck.cards) deck = fixSample(sampleDeck());
+  if (!deck.meta) deck.meta = sampleDeck().meta;
   const hm = deck.cards.find(c=>c.id===7);
   if (hm && hm.name==='Hammer' && !hm.abilities.length) hm.abilities = sampleDeck().cards[6].abilities; // starter migration
   try { G = JSON.parse(localStorage.getItem('cd.game.v1')); } catch(e){}
@@ -249,68 +297,171 @@ function effText(e){
 }
 
 /* ===================================================================
+   Icons & tokens
+=================================================================== */
+const ICONS = {
+  plus:'<path d="M12 5v14M5 12h14" stroke-width="3.2"/>',
+  minus:'<path d="M5 12h14" stroke-width="3.2"/>',
+  arrow:'<path d="M4 12h15M13 6l6 6-6 6" stroke-width="2.6"/>',
+  self:'<rect x="6" y="2.5" width="12" height="19" rx="3.5"/><path d="M12 8l1.3 2.8 3 .4-2.2 2 .6 3-2.7-1.5-2.7 1.5.6-3-2.2-2 3-.4z" fill="currentColor" stroke="none"/>',
+  stack:'<rect x="9" y="2.5" width="11" height="15" rx="3" opacity=".55"/><rect x="6" y="5" width="11" height="15" rx="3" fill="var(--ibg)"/><rect x="3" y="7.5" width="11" height="14" rx="3" fill="var(--ibg)"/>',
+  attached:'<rect x="11" y="2.5" width="10" height="13" rx="3" transform="rotate(10 16 9)" fill="var(--ibg)" opacity=".7"/><rect x="3" y="7" width="12" height="15" rx="3.5" fill="var(--ibg)"/><path d="M9 12v5" stroke-width="2.6"/>',
+  attach:'<path d="M9 8H6.5a4 4 0 000 8H9M15 8h2.5a4 4 0 010 8H15M8.5 12h7"/>',
+  detach:'<path d="M9 8H6.5a4 4 0 000 8H9M15 8h2.5a4 4 0 010 8H15"/><path d="M12 3.5v3M7.5 19.5l1.5-2.5M16.5 19.5L15 17" stroke-width="2.2"/>',
+  ready:'<path d="M20 12a8 8 0 11-2.6-5.9"/><path d="M20.5 3.5v5.5H15" stroke-width="2.6"/>',
+  exhaust:'<rect x="2.5" y="6.5" width="19" height="11" rx="3.5"/><path d="M9 10.5h4l-4 3.2h4" stroke-width="2"/>',
+  outplay:'<rect x="5.5" y="2.5" width="13" height="19" rx="3.5" stroke-dasharray="3.2 3"/>',
+  bolt:'<path d="M13.5 2L5 14h6l-1 8 9-12.5h-6z" fill="currentColor"/>',
+  play:'<circle cx="12" cy="12" r="9"/><path d="M10 8l6 4-6 4z" fill="currentColor"/>',
+  q:'<path d="M12 2.5l8 3v6c0 5-3.3 8.3-8 10-4.7-1.700-8-5-8-10v-6z"/><path d="M9.700 9.500a2.400 2.400 0 114.600.800c0 1.600-2.300 1.800-2.300 3.400M12 16.800v.4" stroke-width="2.4"/>',
+  gem:'<path d="M6 4h12l4 6-10 11L2 10z" fill="#fff4" /><path d="M2 10h20M9 4l-2 6 5 11 5-11-2-6"/>',
+  flag:'<path d="M6 21.500V3"/><path d="M6 4h13l-3 4 3 4H6" fill="currentColor"/>',
+  box:'<path d="M3 8l9-5 9 5v9l-9 5-9-5z"/><path d="M3 8l9 5 9-5M12 13v9"/>',
+  tag:'<path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.500" cy="8.500" r="1.500" fill="currentColor"/>',
+  spread:'<path d="M12 21v-9M12 12L5 5M12 12l7-7M5 5v4M5 5h4M19 5v4M19 5h-4"/>',
+  ankh:'<ellipse cx="12" cy="7" rx="4.200" ry="4.800"/><path d="M12 11.800V22M6 15.500h12"/>',
+  sun:'<circle cx="12" cy="12" r="4.500"/><path d="M12 1.500v3M12 19.500v3M1.500 12h3M19.500 12h3M4.600 4.600l2.100 2.100M17.300 17.300l2.100 2.100M4.600 19.400l2.100-2.100M17.300 6.700l2.100-2.100"/>',
+};
+function ico(name,cls){
+  const s=document.createElement('span'); s.className='ico '+(cls||'');
+  s.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICONS[name]||''}</svg>`; return s;
+}
+const meta = () => deck.meta || (deck.meta={resEmoji:{},resColor:{},tagEmoji:{},tagColor:{}});
+const PAL=['#1f4e8c','#1fa39a','#b8402f','#a8741a','#2f7d4f','#6b4a8c','#c4622d'];
+const hashPick=(name,arr)=>{ let x=0; for(const ch of String(name)) x=(x*31+ch.charCodeAt(0))>>>0; return arr[x%arr.length]; };
+const resColor = name => meta().resColor[lc(name)] || hashPick(lc(name),PAL);
+const tagColor = name => meta().tagColor[lc(name)] || hashPick(lc(name),PAL);
+function resTok(res,n){
+  const gem=!res||res==='*';
+  const e=gem?null:meta().resEmoji[lc(res)];
+  const t=h('span',{class:'tok'+(gem?' gem':''),title:gem?'any resource':res,style:gem?{}:{background:resColor(res)}}, gem?ico('gem'):(e||String(res).trim().charAt(0).toUpperCase()));
+  if(gem) t.firstChild.style.cssText='width:14px;height:14px;color:#fff';
+  if(n!=null) t.append(h('span',{class:'n'},n));
+  return t;
+}
+function tagBadge(tag){
+  if(!tag) return null; const e=meta().tagEmoji[lc(tag)];
+  return h('span',{class:'tg'+(e?'':' txt'),title:tag,style:{'--tg':tagColor(tag)}}, e||tag);
+}
+function resChip(name,text){ return h('span',{class:'pill ef',style:{gap:'4px'}},resTok(name),text); }
+const OPSYM={'<':'<','<=':'≤','=':'=','>=':'≥','>':'>'};
+const pill=(cls,...k)=>h('span',{class:'pill '+cls},...k);
+const cmp=(op,n)=>h('span',{class:'cmp'},OPSYM[op]+n);
+const filt=c=>[c.tag?tagBadge(c.tag):null, c.res?resTok(c.res,c.n):null];
+function scopeIcons(scope,tag){
+  switch(scope){ case 'self': return [ico('self')]; case 'any': return [ico('stack')]; case 'tag': return [ico('stack'),tagBadge(tag)];
+    case 'att': return [ico('attached')]; default: return [ico('attached'),tagBadge(tag)]; }
+}
+function condPill(c){
+  switch(c.type){
+    case 'tagCount': return pill('cd',ico('stack'),tagBadge(c.tag),cmp(c.op,c.n));
+    case 'resCount': return pill('cd',ico('stack'),resTok(c.res),cmp(c.op,c.n));
+    case 'selfRes': return pill('cd',ico('self'),resTok(c.res),cmp(c.op,c.n));
+    case 'isReady': return pill('cd',ico('self'),ico('ready'));
+    case 'isExhausted': return pill('cd',ico('self'),ico('exhaust'));
+    case 'hasAtt': return pill('cd',ico('attached'));
+    case 'attTag': return pill('cd',ico('attached'),tagBadge(c.tag),cmp(c.op,c.n));
+    case 'attRes': return pill('cd',ico('attached'),resTok(c.res),cmp(c.op,c.n));
+  } return pill('cd','?');
+}
+function costPill(c){
+  switch(c.type){
+    case 'pay': return pill('co',ico('minus'),resTok(c.res,c.n),...scopeIcons(c.scope,c.tag));
+    case 'exSelf': return pill('co',ico('self'),ico('exhaust'));
+    case 'exCard': return pill('co',ico('exhaust'),ico('stack'),...filt(c));
+    case 'detach': return pill('co',ico('detach'),ico('attached'),...filt(c));
+  } return pill('co','?');
+}
+function effPill(e){
+  switch(e.type){
+    case 'gain': return pill('ef',ico('plus'),resTok(e.res,e.n), ...(e.target==='self'?[ico('self')]:e.target==='tag'?[ico('stack'),tagBadge(e.tag)]:[ico('spread')]));
+    case 'ready': return pill('ef',ico('ready'),...(e.rmode==='self'?[ico('self')]:[ico('stack'),...filt({tag:e.tag,res:e.res,n:1})]));
+    case 'attach': return pill('ef',ico('attach'),
+      ...(e.src==='self'?[ico('self')]:[ico(e.src==='out'?'outplay':'stack'),tagBadge(e.srcTag)]),
+      ico('arrow','mini'),
+      ...(e.dst==='self'?[ico('self')]:[ico('stack'),tagBadge(e.dstTag)]));
+  } return pill('ef','?');
+}
+function costsEl(list){
+  if(ui.text) return h('div',{class:'d'}, list.length?list.map(costText).join('; '):'Nothing — free');
+  return h('div',{class:'rg'}, list.length?list.map(costPill):h('span',{},'free'));
+}
+function ruleTokens(a){
+  const w=h('div',{class:'rule'});
+  if(a.conds.length) w.append(h('div',{class:'rg'},ico('q','qi'),a.conds.map(condPill)));
+  const row=h('div',{class:'rg'});
+  a.costs.forEach(c=>row.append(costPill(c)));
+  if(a.costs.length&&a.effs.length) row.append(ico('arrow','arr'));
+  a.effs.forEach(e=>row.append(effPill(e)));
+  if(row.children.length) w.append(row);
+  if(!w.children.length) w.append(h('span',{},'—'));
+  return w;
+}
+
+/* ===================================================================
    Card face
 =================================================================== */
-function resChip(name, text){ return h('span',{class:'chip res',style:{background:resColor(name)}}, text); }
 function abilityDesc(a){
   const parts=[];
   if (a.conds.length) parts.push(h('div',{}, h('b',{},'If: '), a.conds.map(condText).join('; ')));
   if (a.costs.length) parts.push(h('div',{}, h('b',{},'Cost: '), a.costs.map(costText).join('; ')));
   if (a.effs.length) parts.push(h('div',{}, h('b',{},'→ '), a.effs.map(effText).join('; ')));
-  if (!parts.length) parts.push(h('div',{class:'muted'},'(no effect)'));
+  if (!parts.length) parts.push(h('div',{},'(no effect)'));
   return parts;
+}
+const abText = a => [a.conds.length?'If '+a.conds.map(condText).join('; ')+'. ':'', a.costs.length?'Cost: '+a.costs.map(costText).join('; ')+'. ':'', a.effs.length?'Effect: '+a.effs.map(effText).join('; '):''].join('');
+let prevVals={}, curVals={};
+function storeUnit(s,inst,ctl){
+  const cur=inst?(inst.res[s.res]||0):(s.start||0);
+  const u=h('div',{class:'su'}, resTok(s.res));
+  if(inst){ const k=inst.iid+':'+s.res; curVals[k]=cur; if(prevVals[k]!==undefined&&prevVals[k]!==cur) u.firstChild.classList.add('pop'); }
+  if(s.max!=null&&s.max<=10){
+    u.append(h('div',{class:'pips',title:`${cur}/${s.max}`},Array.from({length:s.max},(_,i)=>h('span',{class:'pip'+(i<cur?' on':'')}))));
+  } else u.append(h('span',{class:'amt'}, inst?(s.max!=null?`${cur}/${s.max}`:`${cur}`):(s.max!=null?`≤${s.max}`:'∞')+(!inst&&s.start?` · ${s.start}`:'')));
+  if(inst&&ctl&&ctl.manual) u.append(h('span',{class:'plusminus'},h('button',{onclick:()=>ctl.manual(s.res,-1)},'−'),h('button',{onclick:()=>ctl.manual(s.res,1)},'+')));
+  return u;
 }
 function cardFace(def, inst, ctl){
   const ex = inst && !inst.ready;
-  const el = h('div',{class:'card'+(ex?' ex':'')});
-  el.append(h('div',{class:'hd'}, h('span',{class:'num'},'#'+def.id), h('span',{class:'nm'},def.name||'(unnamed)')));
-  if (def.tags.length) el.append(h('div',{class:'tags'}, def.tags.map(t=>h('span',{class:'chip tag'},t))));
-  if (def.stores.length){
-    el.append(h('div',{class:'sec'},'Stores'));
-    el.append(h('div',{class:'stores'}, def.stores.map(s=>{
-      const cur = inst ? (inst.res[s.res]||0) : null;
-      const txt = inst ? `${s.res} ${cur}${s.max!=null?'/'+s.max:''}` : `${s.res}${(s.max!=null||s.start)?' ('+[s.max!=null?'max '+s.max:'',s.start?'start '+s.start:''].filter(Boolean).join(', ')+')':''}`;
-      const c = resChip(s.res, txt);
-      if (inst && ctl && ctl.manual) c.append(h('span',{class:'plusminus'},
-        h('button',{onclick:()=>ctl.manual(s.res,-1)},'−'), h('button',{onclick:()=>ctl.manual(s.res,1)},'+')));
-      return c;
-    })));
-  }
-  if (def.abilities.length) el.append(h('div',{class:'sec'},'Abilities'));
-  const abs = h('div',{class:'abs'});
+  const first=def.tags[0];
+  const el = h('div',{class:'card'+(ex?' ex':''),style:first?{'--tc':tagColor(first)}:{}});
+  el.append(h('div',{class:'band'}, h('span',{class:'num'},'#'+def.id), h('span',{class:'nm'},def.name||'(unnamed)'),
+    h('span',{class:'tagrow'},def.tags.map(tagBadge))), h('div',{class:'zig'}));
+  const body=h('div',{class:'body'});
+  if(def.stores.length) body.append(h('div',{class:'stores'},def.stores.map(s=>storeUnit(s,inst,ctl))));
+  const abs=h('div',{class:'abs'});
   def.abilities.forEach((a,i)=>{
-    const body = [h('div',{class:'t'}, a.name||'Ability', h('i',{}, a.mandatory?'mandatory':'optional')), h('div',{class:'d'}, abilityDesc(a))];
-    if (inst && ctl && !a.mandatory){
-      const ok = ctl.can(i);
-      abs.append(h('button',{class:'ab abtn o',disabled:!ok,onclick:()=>ctl.use(i)}, body));
-    } else if (inst && ctl && a.mandatory){
-      abs.append(h('div',{class:'ab m',style:{}}, body));
-    } else abs.append(h('div',{class:'ab '+(a.mandatory?'m':'o')}, body));
+    const kids=[h('div',{class:'t'},ico(a.mandatory?'bolt':'play','mk'),a.name||'Ability'), ui.text?h('div',{class:'d'},abilityDesc(a)):ruleTokens(a)];
+    const attrs={title:(a.mandatory?'Mandatory. ':'Optional. ')+abText(a)};
+    if(inst&&ctl&&!a.mandatory) abs.append(h('button',{...attrs,class:'ab abtn o',disabled:!ctl.can(i),onclick:()=>ctl.use(i)},kids));
+    else abs.append(h('div',{...attrs,class:'ab '+(a.mandatory?'m':'o')},kids));
   });
-  el.append(abs);
+  body.append(abs); el.append(body, h('div',{class:'foot'}));
+  if(ex) el.append(h('div',{class:'exmark'},ico('exhaust')));
   return el;
 }
 function levelFace(l){
-  const el = h('div',{class:'card level'});
-  el.append(h('div',{class:'hd'}, h('span',{class:'num'},'LVL '+l.id), h('span',{class:'nm'},l.name||'(unnamed)')));
-  el.append(h('div',{class:'sec'},'Cards with these tags are used'));
-  el.append(h('div',{class:'tags'}, l.tags.map(t=>h('span',{class:'chip tag'},t))));
-  el.append(h('div',{class:'sec'},'Start out of play'));
-  el.append(h('div',{}, l.outOfPlay.length ? l.outOfPlay.map(n=>'#'+n).join(', ') : '—'));
-  if (l.outOfPlay.length){
-    el.append(h('div',{class:'sec'},'To bring a card into play'));
-    el.append(h('div',{class:'ab o'}, h('div',{class:'d'},[
-      l.bringConds.length?h('div',{},h('b',{},'If: '),l.bringConds.map(condText).join('; ')):null,
-      l.bringCosts.length?h('div',{},h('b',{},'Cost: '),l.bringCosts.map(costText).join('; ')):null,
-      !l.bringConds.length&&!l.bringCosts.length?'Free':null])));
+  const el=h('div',{class:'card level'});
+  el.append(h('div',{class:'band'}, h('span',{class:'num'},'LVL '+l.id), h('span',{class:'nm'},l.name||'(unnamed)'), ico('flag')), h('div',{class:'zig'}));
+  const body=h('div',{class:'body'});
+  body.append(h('div',{class:'panel2'}, h('div',{class:'lab'},ico('stack'),'Cards used'),
+    h('div',{class:'rg'},l.tags.map(t=>tagBadge(t)||null),ui.text?l.tags.join(', '):null)));
+  if(l.outOfPlay.length){
+    body.append(h('div',{class:'panel2'}, h('div',{class:'lab'},ico('outplay'),'Start out of play'),
+      h('div',{class:'rg'},l.outOfPlay.map(n=>h('span',{class:'oop'},n)))));
+    const bi=h('div',{class:'panel2'}, h('div',{class:'lab'},ico('outplay'),ico('arrow','mini'),ico('self'),'Bring into play'));
+    if(ui.text) bi.append(h('div',{class:'d'},[l.bringConds.length?'If '+l.bringConds.map(condText).join('; ')+'. ':'',l.bringCosts.length?'Cost: '+l.bringCosts.map(costText).join('; '):''].join('')||'Free'));
+    else { if(l.bringConds.length) bi.append(h('div',{class:'rg'},ico('q','qi'),l.bringConds.map(condPill)));
+      bi.append(h('div',{class:'rg'},l.bringCosts.length?l.bringCosts.map(costPill):h('span',{},'free'))); }
+    body.append(bi);
   }
-  el.append(h('div',{style:{flex:1}}));
-  el.append(h('div',{class:'sec'},'Complete the level by paying'));
-  el.append(h('div',{class:'ab m'}, h('div',{class:'d'}, l.goalCosts.length? l.goalCosts.map(costText).join('; ') : 'Nothing — free')));
+  body.append(h('div',{class:'goal'}, h('div',{class:'lab'},ico('flag'),'Complete by paying'), costsEl(l.goalCosts)));
+  el.append(body,h('div',{class:'foot'}));
   return el;
 }
 function cardBack(level){
-  return h('div',{class:'card back'+(level?' level':'')}, h('div',{class:'bk'}, level?'◈':'◇', h('div',{class:'bkt'},'CONVERSION DECK'), h('div',{class:'bks'},level?'LEVEL':'')));
+  const el=h('div',{class:'card back'+(level?' level':'')}, ico('ankh'), h('div',{class:'bkt'},'CONVERSION DECK'), level?h('div',{class:'bks'},'LEVEL'):null);
+  return el;
 }
 const faceFor = it => it.k==='c' ? cardFace(cardDef(it.id)) : levelFace(levelDef(it.id));
 const parseOrder = s => ({k:s[0], id:+s.slice(2)});
@@ -648,7 +799,7 @@ function rowsEditor(arr,T,opts,onStruct){
 }
 const sub = (title,...k) => h('div',{class:'sub'},h('h4',{},title),...k);
 
-let ui={tab:'design', sel:null, edit:null, backs:false};
+let ui={tab:'design', sel:null, edit:null, backs:false, text:false};
 function tagInput(arr,onChange){
   return h('input',{type:'text',size:28,placeholder:'comma, separated, tags',value:arr.join(', '),
     oninput:e=>{ arr.length=0; e.target.value.split(',').map(s=>s.trim()).filter(Boolean).forEach(t=>arr.push(t)); onChange&&onChange(); }});
@@ -742,9 +893,22 @@ function exportJSON(){
 }
 function importJSON(){
   const inp=h('input',{type:'file',accept:'.json,application/json',onchange:async e=>{
-    try{ const d=JSON.parse(await e.target.files[0].text()); if(!d.cards||!d.levels||!d.order) throw 0; deck=d; G=newGame(); history=[]; ui.sel=null; saveAll(); render(); }
+    try{ const d=JSON.parse(await e.target.files[0].text()); if(!d.cards||!d.levels||!d.order) throw 0; deck=d; if(!deck.meta) deck.meta={resEmoji:{},resColor:{},tagEmoji:{},tagColor:{}}; G=newGame(); history=[]; ui.sel=null; saveAll(); render(); }
     catch(err){ alert('That file is not a valid deck.'); } }});
   inp.click();
+}
+function symbolsPanel(){
+  const res=new Set(), tags=new Set();
+  deck.cards.forEach(c=>{c.tags.forEach(t=>tags.add(t)); c.stores.forEach(x=>x.res&&res.add(x.res));});
+  deck.levels.forEach(l=>l.tags.forEach(t=>tags.add(t)));
+  const M=meta();
+  const row=(name,emo,col,isRes)=>h('div',{class:'symrow'}, isRes?resTok(name):tagBadge(name)||h('span',{}),
+    h('span',{style:{flex:1}},name),
+    h('input',{type:'text',placeholder:'emoji',value:emo[lc(name)]||'',onchange:e=>{ const v=e.target.value.trim(); if(v) emo[lc(name)]=v; else delete emo[lc(name)]; saveAll(); render(); }}),
+    h('input',{type:'color',value:col[lc(name)]||(isRes?resColor(name):tagColor(name)),title:'color',onchange:e=>{col[lc(name)]=e.target.value;saveAll();render();}}));
+  return h('details',{style:{marginTop:'10px'}},h('summary',{},'Symbols: emoji & colors'),
+    h('div',{class:'muted',style:{margin:'6px 0'}},'Resources'),[...res].map(n=>row(n,M.resEmoji,M.resColor,true)),
+    h('div',{class:'muted',style:{margin:'6px 0'}},'Tags (the first tag sets a card\'s color)'),[...tags].map(n=>row(n,M.tagEmoji,M.tagColor,false)));
 }
 function renderDesign(){
   if(ui.edit) return renderEditor();
@@ -770,6 +934,7 @@ function renderDesign(){
         h('button',{class:'btn pri',onclick:()=>startEdit('c')},'+ Card'),
         h('button',{class:'btn',onclick:()=>startEdit('l')},'+ Level')),
       list,
+      symbolsPanel(),
       h('hr',{style:{borderColor:'var(--line)',margin:'12px 0'}}),
       h('div',{class:'row'},
         h('button',{class:'btn sm',onclick:exportJSON},'Export'),
@@ -807,7 +972,8 @@ function ctlFor(inst){
 }
 function slotFor(inst){
   const d=cardDef(inst.num);
-  const wrap=h('div',{class:'slot'}, cardFace(d,inst,ctlFor(inst)));
+  const wrap=h('div',{class:'slot hz'}, cardFace(d,inst,ctlFor(inst)));
+  if(inst.parent) wrap.append(h('span',{class:'linkbadge',title:'attached'},ico('attach')));
   const kids=G.inPlay.filter(c=>c.parent===inst.iid);
   if(kids.length) wrap.append(h('div',{class:'att'},kids.map(slotFor)));
   return wrap;
@@ -865,14 +1031,17 @@ function renderPlay(){
    Shell
 =================================================================== */
 function render(){
-  refreshLists();
+  refreshLists(); curVals={};
   const tabs=[['design','Design'],['print','Print'],['play','Play']];
   $('#nav').replaceChildren(...tabs.map(([k,t])=>h('button',{class:ui.tab===k?'on':'',onclick:()=>{ui.tab=k;try{localStorage.setItem('cd.tab',k)}catch(e){}render();}},t)));
   const main=$('#main');
   main.replaceChildren(ui.tab==='design'?renderDesign():ui.tab==='print'?renderPrint():renderPlay());
   const lg=$('#log'); if(lg) lg.scrollTop=lg.scrollHeight;
+  prevVals=curVals; $('#txt').checked=ui.text;
 }
 loadAll();
+$('#txt').addEventListener('change',e=>{ui.text=e.target.checked;try{localStorage.setItem('cd.text',ui.text?'1':'')}catch(_){} render();});
+try{ui.text=!!localStorage.getItem('cd.text');}catch(e){}
 try{ const t=localStorage.getItem('cd.tab'); if(t) ui.tab=t; }catch(e){}
 render();
 </script>
