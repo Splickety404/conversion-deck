@@ -40,11 +40,11 @@ input[type=number]{width:60px}
 .ab-ed{border:1px solid var(--acc);border-radius:8px;padding:8px;margin:10px 0}
 .muted{color:var(--mute)}
 /* ---------- card face (Egyptian theme) ---------- */
-:root{--sand:#ecd9ae;--gold:#c9962b;--lapis:#1f4e8c;--lapisd:#14305a;--turq:#1fa39a;--carn:#b8402f;--mal:#2f7d4f;--ink:#3a2a10}
-.card{--tc:#1f4e8c;width:2.5in;height:3.5in;background:linear-gradient(165deg,#f4e6c0,#e3ca94);color:var(--ink);border:3px solid var(--gold);border-radius:18px;box-shadow:inset 0 0 0 2px #fff7,inset 0 0 0 5px #c9962b44;display:flex;flex-direction:column;overflow:hidden;font:600 8.5pt/1.2 Nunito,system-ui,sans-serif;position:relative}
+:root{--sand:#ecd9ae;--gold:#c9962b;--lapis:#1f4e8c;--lapisd:#14305a;--turq:#1fa39a;--carn:#b8402f;--mal:#2f7d4f;--cink:#3a2a10}
+.card{--tc:#1f4e8c;width:2.5in;height:3.5in;background:linear-gradient(165deg,#f4e6c0,#e3ca94);color:var(--cink);border:3px solid var(--gold);border-radius:18px;box-shadow:inset 0 0 0 2px #fff7,inset 0 0 0 5px #c9962b44;display:flex;flex-direction:column;overflow:hidden;font:600 8.5pt/1.2 Nunito,system-ui,sans-serif;position:relative}
 .card .band{background:linear-gradient(180deg,var(--tc),color-mix(in srgb,var(--tc) 70%,#000));color:#fff;padding:6px 8px 5px;display:flex;align-items:center;gap:6px;position:relative}
 .card .zig{height:6px;background:linear-gradient(135deg,var(--tc) 25%,transparent 25%) -6px 0,linear-gradient(225deg,var(--tc) 25%,transparent 25%) -6px 0;background-size:12px 6px;flex:none}
-.card .num{background:#f6e7bf;color:var(--ink);border:2px solid #3a2a10;border-radius:999px;padding:0 8px;font:700 9pt Cinzel,serif;box-shadow:inset 0 0 0 1px var(--gold);flex:none}
+.card .num{background:#f6e7bf;color:var(--cink);border:2px solid #3a2a10;border-radius:999px;padding:0 8px;font:700 9pt Cinzel,serif;box-shadow:inset 0 0 0 1px var(--gold);flex:none}
 .card .nm{font:700 10.5pt/1.1 Cinzel,serif;flex:1;text-shadow:0 1px 1px #0006}
 .card .tagrow{display:flex;gap:3px;flex:none}
 .card .body{padding:2px 8px 4px;display:flex;flex-direction:column;gap:5px;flex:1;min-height:0}
@@ -52,8 +52,8 @@ input[type=number]{width:60px}
 .card .stores{display:flex;gap:6px;flex-wrap:wrap}
 .su{display:flex;align-items:center;gap:4px;background:#fff6;border:1px solid #c9962b88;border-radius:999px;padding:2px 8px 2px 3px}
 .su .pips{display:flex;gap:2px;align-items:center;flex-wrap:wrap;max-width:1.2in}
-.pip{width:8px;height:8px;border-radius:3px;border:1.5px solid var(--ink);background:transparent}
-.pip.on{background:var(--ink)}
+.pip{width:8px;height:8px;border-radius:3px;border:1.5px solid var(--cink);background:transparent}
+.pip.on{background:var(--cink)}
 .su .amt{font-weight:800;font-size:8.5pt}
 .ico{display:inline-flex;width:15px;height:15px;flex:none}
 .ico svg{width:100%;height:100%;display:block}
@@ -69,7 +69,7 @@ input[type=number]{width:60px}
 .pill .cmp{font-weight:800}
 .rule{display:flex;flex-direction:column;gap:3px}
 .rg{display:flex;flex-wrap:wrap;gap:4px 5px;align-items:center}
-.rg .arr{color:var(--ink);width:17px;height:17px}
+.rg .arr{color:var(--cink);width:17px;height:17px}
 .rg .qi{color:var(--lapis)}
 .rg .mini{width:12px;height:12px}
 .ab{background:#fffa;border:1.5px solid #c9962b66;border-radius:12px;padding:3px 6px 4px 7px;position:relative;text-align:left}
@@ -88,12 +88,12 @@ input[type=number]{width:60px}
 .card.level .nm{text-shadow:none}
 .card.level .num{background:#14305a;color:#f0cf70;border-color:#14305a}
 .card.level .zig{background:linear-gradient(135deg,#c9962b 25%,transparent 25%) -6px 0,linear-gradient(225deg,#c9962b 25%,transparent 25%) -6px 0;background-size:12px 6px}
-.card.level .panel2{background:#f4e6c0;color:var(--ink);border-radius:12px;padding:4px 7px;display:flex;flex-direction:column;gap:3px}
+.card.level .panel2{background:#f4e6c0;color:var(--cink);border-radius:12px;padding:4px 7px;display:flex;flex-direction:column;gap:3px}
 .card.level .lab{display:flex;align-items:center;gap:4px;font:700 7pt Cinzel,serif;text-transform:uppercase;letter-spacing:.04em}
 .card.level .foot{background:repeating-linear-gradient(90deg,#f0cf70 0 6px,transparent 6px 9px)}
 .card.level .goal{margin-top:auto;background:linear-gradient(180deg,#f0cf70,#c9962b);color:#14305a;border-radius:14px;padding:5px 8px;display:flex;flex-direction:column;gap:3px;box-shadow:inset 0 0 0 2px #fff6}
 .card.level .goal .rg{background:#f4e6c0;border-radius:10px;padding:3px 5px}
-.oop{display:inline-grid;place-items:center;width:24px;height:32px;border:2px dashed var(--ink);border-radius:5px;font:800 9pt Nunito,sans-serif}
+.oop{display:inline-grid;place-items:center;width:24px;height:32px;border:2px dashed var(--cink);border-radius:5px;font:800 9pt Nunito,sans-serif}
 .card.back{align-items:center;justify-content:center;background:radial-gradient(circle at 50% 40%,#2f66b0,#14305a 75%);border-color:#e5b94a;color:#f0cf70;text-align:center;gap:6px}
 .card.back::before{content:"";position:absolute;inset:8px;border:2px solid #e5b94a88;border-radius:12px}
 .card.back.level{background:radial-gradient(circle at 50% 40%,#f6dc88,#c9962b 75%);color:#14305a;border-color:#14305a}
@@ -245,6 +245,9 @@ function saveAll(){
 }
 const cardDef = id => deck.cards.find(c=>c.id===id);
 const levelDef = id => deck.levels.find(l=>l.id===id);
+/* Cards are numbered automatically by their position among standard cards in the deck; ids are internal only. */
+function numOf(uid){ let n=0; for(const s of deck.order){ if(s[0]==='c'){ n++; if(+s.slice(2)===uid) return n; } } return n+1; }
+function lvlOf(uid){ let n=0; for(const s of deck.order){ if(s[0]==='l'){ n++; if(+s.slice(2)===uid) return n; } } return n+1; }
 function refreshLists(){
   const tags=new Set(), res=new Set();
   deck.cards.forEach(c=>{ c.tags.forEach(t=>tags.add(t)); c.stores.forEach(s=>res.add(s.res)); });
@@ -425,7 +428,7 @@ function cardFace(def, inst, ctl){
   const ex = inst && !inst.ready;
   const first=def.tags[0];
   const el = h('div',{class:'card'+(ex?' ex':''),style:first?{'--tc':tagColor(first)}:{}});
-  el.append(h('div',{class:'band'}, h('span',{class:'num'},'#'+def.id), h('span',{class:'nm'},def.name||'(unnamed)'),
+  el.append(h('div',{class:'band'}, h('span',{class:'num'},'#'+numOf(def.id)), h('span',{class:'nm'},def.name||'(unnamed)'),
     h('span',{class:'tagrow'},def.tags.map(tagBadge))), h('div',{class:'zig'}));
   const body=h('div',{class:'body'});
   if(def.stores.length) body.append(h('div',{class:'stores'},def.stores.map(s=>storeUnit(s,inst,ctl))));
@@ -442,13 +445,13 @@ function cardFace(def, inst, ctl){
 }
 function levelFace(l){
   const el=h('div',{class:'card level'});
-  el.append(h('div',{class:'band'}, h('span',{class:'num'},'LVL '+l.id), h('span',{class:'nm'},l.name||'(unnamed)'), ico('flag')), h('div',{class:'zig'}));
+  el.append(h('div',{class:'band'}, h('span',{class:'num'},'LVL '+lvlOf(l.id)), h('span',{class:'nm'},l.name||'(unnamed)'), ico('flag')), h('div',{class:'zig'}));
   const body=h('div',{class:'body'});
   body.append(h('div',{class:'panel2'}, h('div',{class:'lab'},ico('stack'),'Cards used'),
     h('div',{class:'rg'},l.tags.map(t=>tagBadge(t)||null),ui.text?l.tags.join(', '):null)));
-  if(l.outOfPlay.length){
+  if(l.outOfPlay.filter(cardDef).length){
     body.append(h('div',{class:'panel2'}, h('div',{class:'lab'},ico('outplay'),'Start out of play'),
-      h('div',{class:'rg'},l.outOfPlay.map(n=>h('span',{class:'oop'},n)))));
+      h('div',{class:'rg'},l.outOfPlay.filter(cardDef).map(n=>h('span',{class:'oop'},numOf(n))))));
     const bi=h('div',{class:'panel2'}, h('div',{class:'lab'},ico('outplay'),ico('arrow','mini'),ico('self'),'Bring into play'));
     if(ui.text) bi.append(h('div',{class:'d'},[l.bringConds.length?'If '+l.bringConds.map(condText).join('; ')+'. ':'',l.bringCosts.length?'Cost: '+l.bringCosts.map(costText).join('; '):''].join('')||'Free'));
     else { if(l.bringConds.length) bi.append(h('div',{class:'rg'},ico('q','qi'),l.bringConds.map(condPill)));
@@ -504,7 +507,7 @@ function detachInst(S,inst){
     i.parent=null; i.ready=true; Object.keys(i.res).forEach(k=>i.res[k]=0); S.outPlay.push(i);
   }
 }
-const label = (S,i) => `#${i.num} ${cardDef(i.num).name}`;
+const label = (S,i) => `#${numOf(i.num)} ${cardDef(i.num).name}`;
 
 /* ask requests: {kind:'pick',title,cands:[inst],avoid} -> inst
                  {kind:'alloc',title,items:[{inst,res,max}],total} -> number[] */
@@ -652,8 +655,8 @@ async function settle(){
 }
 function drawOne(){
   const it=parseOrder(deck.order[G.pos]); G.pos++;
-  if(it.k==='c'){ G.unlocked.push(it.id); say(`Unlocked #${it.id} ${cardDef(it.id).name}`); return false; }
-  G.level=it.id; G.phase='levelready'; say(`Reached level ${it.id}: ${levelDef(it.id).name}`); return true;
+  if(it.k==='c'){ G.unlocked.push(it.id); say(`Unlocked #${numOf(it.id)} ${cardDef(it.id).name}`); return false; }
+  G.level=it.id; G.phase='levelready'; say(`Reached level ${lvlOf(it.id)}: ${levelDef(it.id).name}`); return true;
 }
 function drawUntilLevel(){ return act(async()=>{
   if(G.pos>=deck.order.length){ G.phase='won'; return; }
@@ -816,7 +819,7 @@ function renderEditor(){
     form.replaceChildren();
     if(isCard){
       put(
-        h('div',{class:'fr'},h('label',{},'Number'),h('input',{type:'number',min:1,value:o.id,oninput:e=>{o.id=+e.target.value;}}),
+        h('div',{class:'fr'},h('label',{},'Card #'+(E.orig?numOf(o.id):deck.cards.length+1)),h('span',{class:'muted'},'(numbered by position in the deck)'),
           h('label',{},'Name'),h('input',{type:'text',value:o.name,oninput:e=>{o.name=e.target.value;}})),
         sub('Tags',tagInput(o.tags)),
         sub('Storable resources (blank max = unlimited; start = amount when the card enters play)',
@@ -836,10 +839,13 @@ function renderEditor(){
         h('button',{class:'btn',onclick:()=>{o.abilities.push({name:'New ability',mandatory:false,conds:[],costs:[],effs:[]});redo();}},'+ Ability'));
     } else {
       put(
-        h('div',{class:'fr'},h('label',{},'Level'),h('b',{},'#'+o.id),h('label',{},'Name'),h('input',{type:'text',value:o.name,oninput:e=>o.name=e.target.value})),
+        h('div',{class:'fr'},h('label',{},'Level'),h('b',{},'LVL '+(E.orig?lvlOf(o.id):deck.levels.length+1)),h('label',{},'Name'),h('input',{type:'text',value:o.name,oninput:e=>o.name=e.target.value})),
         sub('Tags of cards used in this level',tagInput(o.tags)),
-        sub('Card numbers that start OUT of play (comma separated)',
-          h('input',{type:'text',size:24,value:o.outOfPlay.join(', '),oninput:e=>{ o.outOfPlay=e.target.value.split(',').map(s=>parseInt(s)).filter(n=>n>0); }})),
+        sub('Cards that start OUT of play (only cards with the tags above are used)',
+          h('div',{style:{display:'flex',flexDirection:'column',gap:'2px',maxHeight:'200px',overflow:'auto'}},
+            deck.cards.map(c=>h('label',{},h('input',{type:'checkbox',checked:o.outOfPlay.includes(c.id),onchange:e=>{
+              o.outOfPlay=o.outOfPlay.filter(x=>x!==c.id); if(e.target.checked) o.outOfPlay.push(c.id); }}),' '+c.name+' ',
+              h('span',{class:'muted'},'['+c.tags.join(', ')+']'))))),
         sub('Conditions to bring a card into play',rowsEditor(o.bringConds,COND_T,{add:'Condition',allowed:['tagCount','resCount'],level:1},redo)),
         sub('Costs to bring a card into play',rowsEditor(o.bringCosts,COST_T,{add:'Cost',allowed:['pay','exCard','detach'],level:1},redo)),
         sub('Costs to COMPLETE the level',rowsEditor(o.goalCosts,COST_T,{add:'Cost',allowed:['pay','exCard','detach'],level:1},redo)));
@@ -849,10 +855,8 @@ function renderEditor(){
   draw();
   const save=()=>{
     if(isCard){
-      if(!(o.id>0)) return alert('Card number must be positive.');
-      if(deck.cards.some(c=>c.id===o.id && c!==E.orig)) return alert('That card number is already used.');
       o.tags=o.tags.filter(Boolean); o.stores=o.stores.filter(s=>s.res);
-      if(E.orig){ Object.assign(E.orig,o); if(E.origId!==o.id){ deck.order=deck.order.map(s=>s==='c:'+E.origId?'c:'+o.id:s); deck.levels.forEach(l=>l.outOfPlay=l.outOfPlay.map(n=>n===E.origId?o.id:n)); } }
+      if(E.orig) Object.assign(E.orig,o);
       else { deck.cards.push(o); deck.order.push('c:'+o.id); deck.nextCard=Math.max(deck.nextCard,o.id+1); }
       ui.sel='c:'+o.id;
     } else {
@@ -882,9 +886,9 @@ function startEdit(kind,orig){
 function moveOrder(i,d){ const j=i+d; if(j<0||j>=deck.order.length) return; [deck.order[i],deck.order[j]]=[deck.order[j],deck.order[i]]; G=newGame(); history=[]; saveAll(); render(); }
 function removeItem(i){
   const it=parseOrder(deck.order[i]);
-  if(!confirm(`Delete ${it.k==='c'?'card #':'level '}${it.id}?`)) return;
+  if(!confirm(`Delete ${it.k==='c'?'card #'+numOf(it.id):'level '+lvlOf(it.id)} (${(it.k==='c'?cardDef(it.id):levelDef(it.id)).name})?`)) return;
   deck.order.splice(i,1);
-  if(it.k==='c') deck.cards=deck.cards.filter(c=>c.id!==it.id); else deck.levels=deck.levels.filter(l=>l.id!==it.id);
+  if(it.k==='c'){ deck.cards=deck.cards.filter(c=>c.id!==it.id); deck.levels.forEach(l=>l.outOfPlay=l.outOfPlay.filter(n=>n!==it.id)); } else deck.levels=deck.levels.filter(l=>l.id!==it.id);
   ui.sel=null; G=newGame(); history=[]; saveAll(); render();
 }
 function exportJSON(){
@@ -916,7 +920,7 @@ function renderDesign(){
   deck.order.forEach((s,i)=>{
     const it=parseOrder(s); const def=it.k==='c'?cardDef(it.id):levelDef(it.id);
     list.append(h('div',{class:'it'+(it.k==='l'?' lv':'')+(ui.sel===s?' sel':''),onclick:()=>{ui.sel=s;render();}},
-      h('span',{class:'n'},(it.k==='c'?'#':'LVL ')+it.id), h('span',{class:'nm'},def?def.name:'?'),
+      h('span',{class:'n'},(it.k==='c'?'#'+numOf(it.id):'LVL '+lvlOf(it.id))), h('span',{class:'nm'},def?def.name:'?'),
       h('button',{class:'btn sm',title:'move toward top',onclick:e=>{e.stopPropagation();moveOrder(i,-1);}},'↑'),
       h('button',{class:'btn sm',title:'move toward bottom',onclick:e=>{e.stopPropagation();moveOrder(i,1);}},'↓')));
   });
@@ -990,7 +994,7 @@ function renderPlay(){
       G.phase==='level'?h('label',{class:'muted'},h('input',{type:'checkbox',checked:ui.manual,onchange:e=>{ui.manual=e.target.checked;render();}}),' manual ± resources'):null)));
   const main=h('div',{class:'panel'});
   const unlockedPile=()=>h('div',{style:{marginTop:'10px'}},h('div',{class:'muted'},'Unlocked pile'),
-    h('div',{class:'pile'},G.unlocked.length?G.unlocked.map(n=>h('span',{class:'mini'},'#'+n+' '+cardDef(n).name)):h('span',{class:'muted'},'empty')));
+    h('div',{class:'pile'},G.unlocked.length?G.unlocked.map(n=>h('span',{class:'mini'},'#'+numOf(n)+' '+cardDef(n).name)):h('span',{class:'muted'},'empty')));
   if(G.phase==='draw'){
     main.append(h('h2',{},'Draw phase'),h('p',{},'Reveal cards from the top of the deck into your unlocked pile until you hit a level card.'),
       h('div',{class:'row'},h('button',{class:'btn pri',onclick:drawUntilLevel},'Draw until level'),h('button',{class:'btn',onclick:drawSingle},'Draw one')),unlockedPile());
@@ -998,14 +1002,14 @@ function renderPlay(){
     const L=levelDef(G.level);
     main.append(h('h2',{},'Level reached'),h('div',{class:'board'},levelFace(L),
       h('div',{style:{maxWidth:'420px'}},h('p',{},`Cards in your unlocked pile with tags ${L.tags.map(t=>`[${t}]`).join(' ')} will be set up. `+
-        (L.outOfPlay.length?`Cards ${L.outOfPlay.map(n=>'#'+n).join(', ')} (if unlocked) start out of play.`:'All start in play.')),
+        (L.outOfPlay.length?`Cards ${L.outOfPlay.filter(cardDef).map(n=>'#'+numOf(n)).join(', ')} (if unlocked) start out of play.`:'All start in play.')),
         h('div',{class:'row'},h('button',{class:'btn pri',onclick:beginLevel},'Set up level'),h('button',{class:'btn',onclick:drawSingle,disabled:true,style:{display:'none'}}))),unlockedPile()));
   } else if(G.phase==='won'){
     main.append(h('h2',{},'🏆 You finished the deck!'),h('button',{class:'btn pri',onclick:()=>{G=newGame();history=[];saveAll();render();}},'Play again'));
   } else {
     const L=levelDef(G.level);
     const canWin=dry((S,l)=>levelCosts(S,[],L.goalCosts,l));
-    main.append(h('div',{class:'row',style:{marginBottom:'10px'}},h('h2',{style:{margin:0}},`Level ${L.id}: ${L.name}`),
+    main.append(h('div',{class:'row',style:{marginBottom:'10px'}},h('h2',{style:{margin:0}},`Level ${lvlOf(L.id)}: ${L.name}`),
       h('button',{class:'btn pri',disabled:!canWin,onclick:completeLevel},'Complete level'),
       h('button',{class:'btn sm',onclick:restartLevel},'Restart level')),
       h('div',{class:'muted',style:{marginBottom:'10px'}},'To complete: '+(L.goalCosts.map(costText).join('; ')||'nothing')));
