@@ -920,6 +920,7 @@ function renderDesign(){
       h('button',{class:'btn sm',title:'move toward top',onclick:e=>{e.stopPropagation();moveOrder(i,-1);}},'↑'),
       h('button',{class:'btn sm',title:'move toward bottom',onclick:e=>{e.stopPropagation();moveOrder(i,1);}},'↓')));
   });
+  if(!deck.order.includes(ui.sel)) ui.sel=deck.order[0]||null;
   const selIdx=deck.order.indexOf(ui.sel);
   const right=h('div',{});
   if(selIdx>=0){
